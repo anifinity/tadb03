@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details - TADB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Telugu Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Telugu:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="post-styles.css">
+    <link rel="stylesheet" href="telugu-fonts.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation - Same as Index -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="back-toggle" onclick="history.back()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="voice-artists-real.html" class="nav-link">
+                    <i class="fas fa-microphone nav-icon"></i>
+                    <span>Voice Artists</span>
+                </a>
+                <a href="anime-schedule.html" class="nav-link">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="about-us.html" class="nav-link">
+                    <i class="fas fa-info-circle nav-icon"></i>
+                    <span>About</span>
+                </a>
+                <a href="contact-us.html" class="nav-link">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <button class="search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home mobile-nav-icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="voice-artists-real.html" class="mobile-nav-link">
+                <i class="fas fa-microphone mobile-nav-icon"></i>
+                <span>Voice Artists</span>
+            </a>
+            <a href="anime-schedule.html" class="mobile-nav-link">
+                <i class="fas fa-calendar mobile-nav-icon"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="about-us.html" class="mobile-nav-link">
+                <i class="fas fa-info-circle mobile-nav-icon"></i>
+                <span>About</span>
+            </a>
+            <a href="contact-us.html" class="mobile-nav-link">
+                <i class="fas fa-envelope mobile-nav-icon"></i>
+                <span>Contact Us</span>
+            </a>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchBox">
+            <div class="search-container">
+                <input type="text" placeholder="Search anime..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section - Same Position -->
+    <section class="hero-section" id="heroSection">
+        <div class="hero-content-grid">
+            <!-- Poster Column -->
+            <div class="poster-column">
+                <div class="poster-container">
+                    <img id="moviePoster" src="" alt="Movie Poster" class="poster-image">
+                    <div class="poster-shadow"></div>
+                    <div class="poster-credit" id="posterCredit">
+                        <div class="credit-content">
+                            <span class="credit-text">Fan made poster</span>
+                            <a href="https://www.instagram.com/mrp_network/" target="_blank" rel="noopener noreferrer" class="credit-author">Poster designed by MRP Networks</a>
+                        </div>
+                        <div class="credit-mobile-slider">
+                            <div class="sliding-text">
+                                <a href="https://www.instagram.com/mrp_network/" target="_blank" rel="noopener noreferrer">
+                                    <span>Fan made poster • Poster designed by MRP Networks • </span>
+                                    <span>Fan made poster • Poster designed by MRP Networks • </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Column -->
+            <div class="content-column">
+                <div class="content-wrapper">
+                    <!-- Badge Container -->
+                    <div class="badge-container">
+                        <div class="series-badge" id="contentTypeBadge">MOVIE</div>
+                        <div class="view-count-badge">
+                            <i class="fas fa-eye"></i>
+                            <span id="postViews" data-post-id="sample-post">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Title -->
+                    <h1 id="movieTitle" class="hero-title">The Martian</h1>
+
+                    <!-- Meta Information -->
+                    <div class="hero-meta-row">
+                        <div class="meta-group">
+                            <span class="meta-item rating-meta" id="imdbRating">
+                                <i class="fas fa-star"></i> 6.8
+                            </span>
+                            <span class="meta-item" id="releaseYear">2025</span>
+                            <span class="meta-item" id="ageRating">PG-13</span>
+                            <span class="meta-item" id="duration">
+                                <i class="fas fa-clock"></i> 24 min
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Genres -->
+                    <div class="hero-genres" id="heroGenres">
+                        Drama, Adventure, Science Fiction
+                    </div>
+
+                    <!-- Description -->
+                    <div class="hero-description" id="heroDescription">
+                        During a manned mission to Mars, Astronaut Mark Watney is presumed dead after a fierce storm and left behind by his crew. But Watney has survived and finds himself stranded and alone on the hostile planet. With only meager supplies, he must draw upon his ingenuity, wit and spirit to subsist and find a way to signal to Earth that he is alive. <span class="read-more">read more</span>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="hero-actions">
+                        <button class="primary-btn trailer-btn" id="trailerBtnHero">
+                            <i class="fas fa-play"></i>
+                            <span>Watch Trailer</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Overlay Content -->
+        <div class="mobile-overlay-content">
+            <div class="overlay-info">
+                <h1 id="overlayMovieTitle" class="overlay-title">The Martian</h1>
+                <div class="overlay-meta">
+                    <span class="overlay-age-rating" id="overlayAgeRating">PG-13</span>
+                    <span class="overlay-year" id="overlayYear">2025</span>
+                    <span class="overlay-duration" id="overlayDuration">24 min</span>
+                    <span class="overlay-genre" id="overlayGenre">Action</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Popup Content Section -->
+    <section class="mobile-popup-section">
+        <div class="popup-container">
+            <!-- Rating Badges Section -->
+            <div class="popup-rating-section">
+                <div class="rating-badge">
+                    <div class="rating-icon imdb">
+                        <span>IMDb</span>
+                    </div>
+                    <div class="rating-info">
+                        <div class="rating-score popup-text-primary" id="popupRating">8.0</div>
+                        <div class="rating-label popup-text-secondary">IMDb Rating</div>
+                        <div class="rating-count popup-text-accent" id="popupViews">Total Ratings</div>
+                    </div>
+                </div>
+                
+                <div class="rating-badge">
+                    <div class="rating-icon tmdb">
+                        <span>C</span>
+                    </div>
+                    <div class="rating-info">
+                        <div class="rating-score popup-text-primary" id="popupTmdbRating">91%</div>
+                        <div class="rating-label popup-text-secondary">Crunchyroll Score</div>
+                        <div class="rating-count popup-text-accent">Total Ratings</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- YouTube Trailer Section -->
+            <div class="popup-streaming">
+                <div class="streaming-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                    </svg>
+                </div>
+                <div class="streaming-info">
+                    <div class="streaming-title popup-text-primary">Watch Official Trailer</div>
+                    <div class="streaming-subtitle popup-text-secondary">Available on YouTube</div>
+                </div>
+                <button class="stream-btn" id="trailerBtn">WATCH TRAILER</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clean Flat Tabs Section -->
+    <section class="movie-info-section">
+        <div class="container">
+            <!-- Simple Clean Tab System -->
+            <div class="clean-tab-system">
+                <div class="tab-nav-container">
+                    <button class="clean-tab active" data-tab="overview">
+                        <i class="fas fa-info-circle"></i>
+                        <span>Overview</span>
+                    </button>
+                    <button class="clean-tab" data-tab="cast-crew">
+                        <i class="fas fa-users"></i>
+                        <span>Cast & Crew</span>
+                    </button>
+                    <button class="clean-tab" data-tab="streaming">
+                        <i class="fas fa-tv"></i>
+                        <span>Streaming</span>
+                    </button>
+                    <button class="clean-tab" data-tab="media">
+                        <i class="fas fa-play-circle"></i>
+                        <span>Media</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Clean Content Container -->
+            <div class="clean-content-container">
+                <!-- Overview Tab -->
+                <div id="overview" class="clean-tab-content active">
+                    <div class="content-grid">
+                        <!-- Movie Details Grid -->
+                        <div class="movie-details-grid">
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Studio</span>
+                                    <span id="studioName" class="detail-value">20th Century Fox & Scott Free Productions</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Format</span>
+                                    <span id="formatType" class="detail-value">Feature Film</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box" id="totalEpisodesBox" style="display: none;">
+                                <div class="detail-icon">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Total Episodes</span>
+                                    <span id="totalEpisodesValue" class="detail-value">12</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Release Date</span>
+                                    <span id="premiereDate" class="detail-value">October 2, 2015</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-check-circle"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Status</span>
+                                    <span id="statusInfo" class="detail-value">Released</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Runtime</span>
+                                    <span id="episodeCount" class="detail-value">24 min</span>
+                                </div>
+                            </div>
+                            
+                            <div class="detail-box">
+                                <div class="detail-icon">
+                                    <i class="fas fa-language"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Language</span>
+                                    <span id="languageInfo" class="detail-value">English (Telugu Dub Available)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Synopsis Grid -->
+                        <div class="synopsis-grid">
+                            <div class="synopsis-box">
+                                <div class="synopsis-icon">
+                                    <i class="fas fa-book-open"></i>
+                                </div>
+                                <div class="synopsis-content">
+                                    <span class="synopsis-label">Synopsis</span>
+                                    <p class="synopsis-text" id="overviewSynopsis">
+                                        Loading synopsis...
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Statistics Grid -->
+                        <div class="statistics-grid">
+                            <div class="stat-box">
+                                <div class="stat-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="statRating">Loading...</span>
+                                    <span class="stat-label">IMDb Rating</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-box">
+                                <div class="stat-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="postViewsStats">0</span>
+                                    <span class="stat-label">Views</span>
+                                </div>
+                            </div>
+                            
+                            <div class="stat-box">
+                                <div class="stat-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-value" id="statLiked">Loading...</span>
+                                    <span class="stat-label">Liked</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cast & Crew Tab -->
+                <div id="cast-crew" class="clean-tab-content">
+                    <div class="content-grid">
+                        <!-- Cast Card -->
+                        <div class="clean-info-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-theater-masks"></i> Main Cast</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="castList" class="cast-grid">
+                                    <!-- Cast will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Crew Card -->
+                        <div class="clean-info-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-cogs"></i> Production Crew</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="crewList" class="cast-grid">
+                                    <!-- Crew will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dubbing Studios Card -->
+                        <div class="clean-info-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-building"></i> Dubbing Studios</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="dubbingStudiosList" class="cast-grid">
+                                    <!-- Dubbing Studios will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Streaming Tab -->
+                <div id="streaming" class="clean-tab-content">
+                    <div class="content-grid">
+                        <div class="clean-info-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-tv"></i> Available Platforms</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="platformsList" class="platforms-grid">
+                                    <!-- Platforms will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media Tab -->
+                <div id="media" class="clean-tab-content">
+                    <div class="content-grid">
+                        <div class="clean-info-card">
+                            <div class="card-header">
+                                <h3><i class="fas fa-play-circle"></i> Trailers & Videos</h3>
+                            </div>
+                            <div class="card-content">
+                                <div id="trailersList" class="trailers-grid">
+                                    <!-- Trailers will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Search Overlay -->
+    <div class="mobile-search-overlay" id="mobileSearchOverlay">
+        <div class="search-header">
+            <button class="search-close-btn" id="searchCloseBtn">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="search-input-container">
+                <input type="text" placeholder="Search anime..." class="mobile-search-input" id="mobileSearchInput">
+                <button class="search-submit-btn" id="searchSubmitBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults">
+            <!-- Search results will appear here -->
+        </div>
+    </div>
+
+    <!-- Trailer Modal -->
+    <div id="trailerModal" class="trailer-modal">
+        <div class="modal-overlay" onclick="closeTrailerModal()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTrailerTitle">Official Trailer</h3>
+                <button class="close-modal" onclick="closeTrailerModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="video-container">
+                <iframe id="trailerPlayer" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer - Same as Index -->
+    <footer class="footer">
+        <div class="disclaimer-section">
+            <h4>Disclaimer</h4>
+            <p>TADB is a fan-made database for Telugu anime content. All anime titles, images, and related content are
+                the property of their respective owners and studios. This website is for informational and entertainment
+                purposes only. We do not host or distribute any copyrighted content.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TADB - Telugu Anime Database. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src='https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js'></script>
+    <script src='https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js'></script>
+
+    <!-- Firebase Configuration and View Counter -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBq2TuKG735hRq34j8IziOcXWNGgvgl5S8",
+            authDomain: "tadb-attendance.firebaseapp.com",
+            databaseURL: "https://tadb-attendance-default-rtdb.firebaseio.com",
+            projectId: "tadb-attendance",
+            storageBucket: "tadb-attendance.firebasestorage.app",
+            messagingSenderId: "361843077723",
+            appId: "1:361843077723:web:81bc48f358198fdff3057e",
+            measurementId: "G-10HQ2PZ0MR"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Initialize Post View Counter
+        (function () {
+            function initPostCounter() {
+                if (typeof firebase === 'undefined' || !firebase.database) {
+                    setTimeout(initPostCounter, 100);
+                    return;
+                }
+
+                const db = firebase.database();
+                const postCounter = document.getElementById('postViews');
+                const postStatsCounter = document.getElementById('postViewsStats');
+
+                if (postCounter) {
+                    // Get post ID from URL query parameter or localStorage
+                    const urlParams = new URLSearchParams(window.location.search);
+                    let postId = urlParams.get('id') || localStorage.getItem('selectedMovieId') || 'default_post';
+                    
+                    // Ensure postId is a string and sanitize it
+                    postId = 'post_' + String(postId).replace(/[^a-zA-Z0-9]/g, '_');
+                    
+                    console.log('Tracking views for post ID:', postId);
+                    postCounter.setAttribute('data-post-id', postId);
+
+                    const postRef = db.ref('total_views/posts/' + postId);
+
+                    // Increment view count
+                    postRef.transaction((current) => (current || 0) + 1);
+
+                    // Listen for updates
+                    postRef.on('value', (snap) => {
+                        const count = snap.val() || 0;
+                        postCounter.textContent = count.toLocaleString();
+                        if (postStatsCounter) {
+                            postStatsCounter.textContent = count.toLocaleString();
+                        }
+                    });
+
+                    // Periodic refresh every 5 seconds
+                    setInterval(() => {
+                        postRef.once('value').then((snap) => {
+                            const count = snap.val() || 0;
+                            postCounter.textContent = count.toLocaleString();
+                            if (postStatsCounter) {
+                                postStatsCounter.textContent = count.toLocaleString();
+                            }
+                        });
+                    }, 5000);
+                }
+            }
+
+            // Initialize when DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    initPostCounter();
+                });
+            } else {
+                initPostCounter();
+            }
+        })();
+    </script>
+
+    <script src="posts-data.js"></script>
+    <script src="simple-manager.js"></script></script>
+    <script src="theme-manager.js"></script>
+    <script src="voice-artist-sync.js"></script>
+    <script src="post-script.js"></script>
+</body>
+
+</html>

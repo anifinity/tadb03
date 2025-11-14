@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Editor - TADB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .editor-container {
+            max-width: 1200px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+        
+        .editor-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .editor-header h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .editor-header p {
+            color: var(--text-muted);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .posts-list {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .post-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .post-item img {
+            width: 80px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .post-item-info {
+            flex: 1;
+        }
+        
+        .post-item-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .post-item-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .post-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+        
+        .error-message {
+            padding: 15px;
+            background: #e74c3c;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-message.show {
+            display: block;
+        }
+        
+        .warning-message {
+            padding: 15px;
+            background: #f39c12;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .warning-message.show {
+            display: block;
+        }
+        
+        .json-validator {
+            margin-top: 10px;
+        }
+        
+        .validate-btn {
+            padding: 6px 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        .validate-btn:hover {
+            background: #2980b9;
+        }
+        
+        .json-status {
+            display: inline-block;
+            margin-left: 10px;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        .json-status.valid {
+            background: #27ae60;
+            color: white;
+        }
+        
+        .json-status.invalid {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .json-status.fixed {
+            background: #f39c12;
+            color: white;
+        }
+        
+        /* Posts Search Styles */
+        .posts-search-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        
+        .posts-search-header h2 {
+            margin: 0;
+        }
+        
+        .posts-search-box {
+            position: relative;
+            width: 300px;
+        }
+        
+        .posts-search-box input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .posts-search-box input:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .posts-search-box i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .posts-search-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .posts-search-box {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="post-editor.html" class="nav-link active">
+                    <i class="fas fa-edit nav-icon"></i>
+                    <span>Post Editor</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="editor-container">
+        <div class="editor-header">
+            <div style="display: flex; justify-content: space-between; align-items: start; gap: 20px; flex-wrap: wrap;">
+                <div>
+                    <h1><i class="fas fa-edit"></i> Post Editor</h1>
+                    <p>Create or edit posts. Changes will automatically appear on the homepage.</p>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button onclick="publishToGitHub()" class="btn btn-primary btn-small" style="white-space: nowrap;">
+                        <i class="fas fa-upload"></i> Publish to GitHub
+                    </button>
+                    <button onclick="exportAllData()" class="btn btn-secondary btn-small" style="white-space: nowrap;">
+                        <i class="fas fa-download"></i> Export Backup
+                    </button>
+                    <button onclick="document.getElementById('importFile').click()" class="btn btn-secondary btn-small" style="white-space: nowrap;">
+                        <i class="fas fa-file-import"></i> Import Backup
+                    </button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importAllData(event)">
+                </div>
+            </div>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> Post saved successfully!
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            <i class="fas fa-exclamation-circle"></i> <span id="errorText"></span>
+        </div>
+
+        <div class="warning-message" id="warningMessage">
+            <i class="fas fa-exclamation-triangle"></i> <span id="warningText"></span>
+        </div>
+
+        <form id="postForm">
+            <input type="hidden" id="postId" name="id">
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Year *</label>
+                    <input type="text" id="year" name="year" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="season">Season/Type *</label>
+                    <input type="text" id="season" name="season" placeholder="e.g., Season 1, Movie" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rating">IMDb Rating</label>
+                    <input type="text" id="rating" name="rating" placeholder="e.g., 8.5">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="ageRating">Age Rating</label>
+                    <input type="text" id="ageRating" name="ageRating" placeholder="e.g., PG-13, PG-18" value="PG-13">
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="Completed">Completed</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="poster">Poster URL *</label>
+                <input type="url" id="poster" name="poster" required>
+            </div>
+
+            <div class="form-group">
+                <label for="backdrop">Backdrop URL</label>
+                <input type="url" id="backdrop" name="backdrop">
+            </div>
+
+            <div class="form-group">
+                <label for="genres">Genres (comma separated)</label>
+                <input type="text" id="genres" name="genres" placeholder="e.g., Action, Adventure, Drama">
+            </div>
+
+            <div class="form-group">
+                <label for="synopsis">Synopsis *</label>
+                <textarea id="synopsis" name="synopsis" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="studio">Studio</label>
+                    <input type="text" id="studio" name="studio">
+                </div>
+                
+                <div class="form-group">
+                    <label for="format">Format</label>
+                    <input type="text" id="format" name="format" placeholder="e.g., Season 01, Feature Film">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <input type="text" id="language" name="language" placeholder="e.g., Telugu Dub Available" value="Telugu Dub Available">
+                </div>
+                
+                <div class="form-group">
+                    <label for="airSeason">Air Season</label>
+                    <select id="airSeason" name="airSeason">
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Fall">Fall</option>
+                        <option value="Unknown" selected>Unknown</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mrp">MRP Credit Visibility</label>
+                    <select id="mrp" name="mrp">
+                        <option value="none" selected>Hidden</option>
+                        <option value="Visible">Visible</option>
+                    </select>
+                    <small style="color: var(--text-muted); display: block; margin-top: 5px;">Show "Fan made poster by MRP Networks" credit</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="viewCount">View Count (Display)</label>
+                    <input type="text" id="viewCount" name="viewCount" placeholder="e.g., 4.2M">
+                    <small style="color: var(--text-muted); display: block; margin-top: 5px;">For display only (actual views tracked by Firebase)</small>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="duration">Duration</label>
+                    <input type="text" id="duration" name="duration" placeholder="e.g., 24 min">
+                </div>
+                
+                <div class="form-group">
+                    <label for="totalEpisodes">Total Episodes</label>
+                    <input type="text" id="totalEpisodes" name="totalEpisodes" placeholder="e.g., 12">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="premiereDate">Premiere Date</label>
+                    <input type="text" id="premiereDate" name="premiereDate" placeholder="e.g., Released on 2025">
+                </div>
+                
+                <div class="form-group">
+                    <label for="broadcast">Broadcast</label>
+                    <input type="text" id="broadcast" name="broadcast" placeholder="e.g., OTT (Crunchyroll)">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="language">Language</label>
+                    <input type="text" id="language" name="language" placeholder="e.g., Telugu Dub Available" value="Telugu Dub Available">
+                </div>
+                
+                <div class="form-group">
+                    <label for="airSeason">Air Season</label>
+                    <select id="airSeason" name="airSeason">
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Fall">Fall</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-chart-line"></i> Statistics (Optional)
+            </h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="statRating">Statistics Rating</label>
+                    <input type="text" id="statRating" name="statRating" placeholder="e.g., 6.9">
+                    <small style="color: var(--text-muted);">For statistics display in Overview tab</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="likedPercentage">Liked Percentage</label>
+                    <input type="text" id="likedPercentage" name="likedPercentage" placeholder="e.g., 94%">
+                    <small style="color: var(--text-muted);">Crunchyroll/TMDB score</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="totalViews">Total Views (Statistics)</label>
+                <input type="text" id="totalViews" name="totalViews" placeholder="e.g., 4.2M">
+                <small style="color: var(--text-muted);">For statistics display</small>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-users"></i> Cast & Crew (Optional)
+            </h3>
+
+            <div class="form-group">
+                <label for="castData">Cast Members (JSON Format)</label>
+                <textarea id="castData" name="castData" placeholder='[{"actorName":"Actor Name","characterName":"Character","actorImage":"URL","characterImage":"URL"}]'></textarea>
+                <small style="color: var(--text-muted);">Add cast as JSON array. Leave empty if none.</small>
+                <div class="json-validator">
+                    <button type="button" class="validate-btn" onclick="validateJSON('castData', 'Cast')">
+                        <i class="fas fa-check"></i> Validate & Auto-Fix
+                    </button>
+                    <span id="castStatus" class="json-status" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="crewData">Crew Members (JSON Format)</label>
+                <textarea id="crewData" name="crewData" placeholder='[{"name":"Name","role":"Role","avatar":"URL","projectImage":"URL"}]'></textarea>
+                <small style="color: var(--text-muted);">Add crew as JSON array. Leave empty if none.</small>
+                <div class="json-validator">
+                    <button type="button" class="validate-btn" onclick="validateJSON('crewData', 'Crew')">
+                        <i class="fas fa-check"></i> Validate & Auto-Fix
+                    </button>
+                    <span id="crewStatus" class="json-status" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="dubbingStudiosData">Dubbing Studios (JSON Format)</label>
+                <textarea id="dubbingStudiosData" name="dubbingStudiosData" placeholder='[{"name":"Studio Name","role":"Dubbing Studio","location":"City","avatar":"URL","projectImage":"URL"}]'></textarea>
+                <small style="color: var(--text-muted);">Add dubbing studios as JSON array. Leave empty if none.</small>
+                <div class="json-validator">
+                    <button type="button" class="validate-btn" onclick="validateJSON('dubbingStudiosData', 'Dubbing Studios')">
+                        <i class="fas fa-check"></i> Validate & Auto-Fix
+                    </button>
+                    <span id="dubbingStudiosStatus" class="json-status" style="display: none;"></span>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-play-circle"></i> Trailers (Optional)
+            </h3>
+
+            <div class="form-group">
+                <label for="trailersData">Trailers (JSON Format)</label>
+                <textarea id="trailersData" name="trailersData" placeholder='[{"title":"Official Trailer","description":"Description","thumbnail":"URL","videoId":"YouTube_ID"}]'></textarea>
+                <small style="color: var(--text-muted);">Add trailers as JSON array. Use YouTube video ID only.</small>
+                <div class="json-validator">
+                    <button type="button" class="validate-btn" onclick="validateJSON('trailersData', 'Trailers')">
+                        <i class="fas fa-check"></i> Validate & Auto-Fix
+                    </button>
+                    <span id="trailersStatus" class="json-status" style="display: none;"></span>
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-tv"></i> Streaming Platforms (Optional)
+            </h3>
+
+            <div class="form-group">
+                <label for="platformsData">Platforms (JSON Format)</label>
+                <textarea id="platformsData" name="platformsData" placeholder='[{"name":"Crunchyroll","status":"Available","icon":"URL"}]'></textarea>
+                <small style="color: var(--text-muted);">Add platforms as JSON array. Leave empty if none.</small>
+                <div class="json-validator">
+                    <button type="button" class="validate-btn" onclick="validateJSON('platformsData', 'Platforms')">
+                        <i class="fas fa-check"></i> Validate & Auto-Fix
+                    </button>
+                    <span id="platformsStatus" class="json-status" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="btn-group"></div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Post
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+
+        <div class="posts-list">
+            <div class="posts-search-header">
+                <h2>Existing Posts</h2>
+                <div class="posts-search-box">
+                    <input type="text" id="postsSearchInput" placeholder="Search posts by title, genre, or year...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+            <div id="postsListCount" style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;"></div>
+            <div id="postsList"></div>
+        </div>
+    </div>
+
+    <script src="data-backup.js"></script>
+    <script src="posts-data.js"></script>
+    <script src="simple-manager.js"></script></script>
+    <script src="theme-manager.js"></script>
+    <script>
+        // Load and display existing posts
+        async function loadPostsList(searchQuery = '') {
+            const postsList = document.getElementById('postsList');
+            const postsListCount = document.getElementById('postsListCount');
+            
+            // Get posts from Firebase (async)
+            let posts = await window.postsManager.getAllPosts();
+            
+            if (!posts || posts.length === 0) {
+                postsList.innerHTML = '<p style="color: var(--text-muted);">No posts yet. Create your first post above!</p>';
+                postsListCount.textContent = '';
+                return;
+            }
+            
+            // Filter posts by search query
+            if (searchQuery.trim() !== '') {
+                const query = searchQuery.toLowerCase();
+                posts = posts.filter(post => 
+                    post.title.toLowerCase().includes(query) ||
+                    (post.genres && post.genres.toLowerCase().includes(query)) ||
+                    post.year.toString().includes(query)
+                );
+            }
+            
+            // Update count
+            const totalPosts = (await window.postsManager.getAllPosts()).length;
+            if (searchQuery.trim() !== '') {
+                postsListCount.textContent = `Showing ${posts.length} of ${totalPosts} posts`;
+            } else {
+                postsListCount.textContent = `Total: ${totalPosts} posts`;
+            }
+            
+            // Display posts or no results message
+            if (posts.length === 0) {
+                postsList.innerHTML = '<p style="color: var(--text-muted);"><i class="fas fa-search"></i> No posts found matching your search.</p>';
+                return;
+            }
+            
+            postsList.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <img src="${post.poster}" alt="${post.title}" onerror="this.style.display='none'">
+                    <div class="post-item-info">
+                        <h3>${post.title}</h3>
+                        <p>${post.year} • ${post.season} • ${post.genres || 'No genres'}</p>
+                    </div>
+                    <div class="post-item-actions">
+                        <button class="btn btn-secondary btn-small" onclick="editPost(${post.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="deletePost(${post.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Setup search functionality
+        function setupPostsSearch() {
+            const searchInput = document.getElementById('postsSearchInput');
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    loadPostsList(e.target.value);
+                });
+            }
+        }
+
+        // Edit post
+        async function editPost(id) {
+            const post = await window.postsManager.getPostById(id);
+            if (!post) return;
+            
+            document.getElementById('postId').value = post.id;
+            document.getElementById('title').value = post.title;
+            document.getElementById('year').value = post.year;
+            document.getElementById('season').value = post.season;
+            document.getElementById('rating').value = post.rating || '';
+            document.getElementById('poster').value = post.poster;
+            document.getElementById('backdrop').value = post.backdrop || '';
+            document.getElementById('genres').value = post.genres || '';
+            document.getElementById('synopsis').value = post.synopsis || '';
+            document.getElementById('studio').value = post.studio || '';
+            document.getElementById('format').value = post.format || '';
+            document.getElementById('duration').value = post.duration || '';
+            document.getElementById('totalEpisodes').value = post.totalEpisodes || '';
+            document.getElementById('ageRating').value = post.ageRating || '';
+            document.getElementById('status').value = post.status || 'Completed';
+            document.getElementById('premiereDate').value = post.premiereDate || '';
+            document.getElementById('broadcast').value = post.broadcast || '';
+            document.getElementById('language').value = post.language || 'Telugu Dub Available';
+            document.getElementById('airSeason').value = post.airSeason || 'Unknown';
+            document.getElementById('mrp').value = post.mrp || 'none';
+            document.getElementById('viewCount').value = post.viewCount || '';
+            
+            // Statistics
+            if (post.statistics) {
+                document.getElementById('statRating').value = post.statistics.rating || '';
+                document.getElementById('likedPercentage').value = post.statistics.likedPercentage || '';
+                document.getElementById('totalViews').value = post.statistics.totalViews || '';
+            }
+            
+            // Load cast, crew, dubbing studios, trailers, platforms
+            document.getElementById('castData').value = post.cast ? JSON.stringify(post.cast, null, 2) : '';
+            document.getElementById('crewData').value = post.crew ? JSON.stringify(post.crew, null, 2) : '';
+            document.getElementById('dubbingStudiosData').value = post.dubbingStudios ? JSON.stringify(post.dubbingStudios, null, 2) : '';
+            document.getElementById('trailersData').value = post.trailers ? JSON.stringify(post.trailers, null, 2) : '';
+            document.getElementById('platformsData').value = post.platforms ? JSON.stringify(post.platforms, null, 2) : '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Delete post
+        async function deletePost(id) {
+            if (confirm('Are you sure you want to delete this post?')) {
+                await window.postsManager.deletePost(id);
+                await loadPostsList();
+                showSuccessMessage('Post deleted successfully!');
+            }
+        }
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('postForm').reset();
+            document.getElementById('postId').value = '';
+        }
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            successMsg.classList.add('show');
+            setTimeout(() => {
+                successMsg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Show error message
+        function showErrorMessage(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            errorText.textContent = message;
+            errorMsg.classList.add('show');
+            setTimeout(() => {
+                errorMsg.classList.remove('show');
+            }, 5000);
+        }
+
+        // Show warning message
+        function showWarningMessage(message) {
+            const warningMsg = document.getElementById('warningMessage');
+            const warningText = document.getElementById('warningText');
+            warningText.textContent = message;
+            warningMsg.classList.add('show');
+            setTimeout(() => {
+                warningMsg.classList.remove('show');
+            }, 5000);
+        }
+
+        // Validate JSON button handler
+        function validateJSON(fieldId, fieldName) {
+            const field = document.getElementById(fieldId);
+            const statusSpan = document.getElementById(fieldId.replace('Data', 'Status'));
+            const jsonString = field.value.trim();
+            
+            if (!jsonString) {
+                statusSpan.style.display = 'none';
+                return;
+            }
+            
+            try {
+                // Try parsing original
+                JSON.parse(jsonString);
+                statusSpan.textContent = '✓ Valid JSON';
+                statusSpan.className = 'json-status valid';
+                statusSpan.style.display = 'inline-block';
+                showSuccessMessage(`${fieldName} JSON is valid!`);
+            } catch (e) {
+                // Try auto-fix
+                try {
+                    const fixed = autoFixJSON(jsonString);
+                    const parsed = JSON.parse(fixed);
+                    
+                    // Update field with fixed JSON
+                    field.value = JSON.stringify(parsed, null, 2);
+                    
+                    statusSpan.textContent = '✓ Auto-Fixed';
+                    statusSpan.className = 'json-status fixed';
+                    statusSpan.style.display = 'inline-block';
+                    showWarningMessage(`${fieldName} JSON was auto-fixed! Please review.`);
+                } catch (e2) {
+                    statusSpan.textContent = '✗ Invalid';
+                    statusSpan.className = 'json-status invalid';
+                    statusSpan.style.display = 'inline-block';
+                    showErrorMessage(`${fieldName} JSON Error: ${e2.message}`);
+                }
+            }
+        }
+
+        // JSON Auto-Fix Function
+        function autoFixJSON(jsonString) {
+            if (!jsonString || jsonString.trim() === '') return '';
+            
+            let fixed = jsonString.trim();
+            
+            // Fix single quotes to double quotes
+            fixed = fixed.replace(/'/g, '"');
+            
+            // Fix missing quotes around keys
+            fixed = fixed.replace(/(\{|,)\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*:/g, '$1"$2":');
+            
+            // Remove trailing commas before closing brackets
+            fixed = fixed.replace(/,(\s*[\]}])/g, '$1');
+            
+            // Add missing commas between objects
+            fixed = fixed.replace(/\}(\s*)\{/g, '},$1{');
+            
+            // Fix common typos
+            fixed = fixed.replace(/actorname/gi, 'actorName');
+            fixed = fixed.replace(/charactername/gi, 'characterName');
+            fixed = fixed.replace(/actorimage/gi, 'actorImage');
+            fixed = fixed.replace(/characterimage/gi, 'characterImage');
+            fixed = fixed.replace(/projectimage/gi, 'projectImage');
+            fixed = fixed.replace(/videoid/gi, 'videoId');
+            
+            return fixed;
+        }
+
+        // Validate and Parse JSON with Auto-Fix
+        function parseJSONWithFix(jsonString, fieldName) {
+            if (!jsonString || jsonString.trim() === '') return [];
+            
+            try {
+                // Try parsing original
+                return JSON.parse(jsonString);
+            } catch (e) {
+                console.warn(`Invalid ${fieldName} JSON, attempting auto-fix...`);
+                
+                try {
+                    // Try auto-fix
+                    const fixed = autoFixJSON(jsonString);
+                    const parsed = JSON.parse(fixed);
+                    
+                    // Show success message
+                    showWarningMessage(`${fieldName} JSON was auto-fixed! Please review the data.`);
+                    
+                    return parsed;
+                } catch (e2) {
+                    // Show error with details
+                    showErrorMessage(`${fieldName} JSON Error: ${e2.message}. Please check the format.`);
+                    return [];
+                }
+            }
+        }
+
+        // Handle form submission
+        document.getElementById('postForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            
+            // Parse JSON fields with auto-fix
+            const cast = parseJSONWithFix(formData.get('castData').trim(), 'Cast');
+            const crew = parseJSONWithFix(formData.get('crewData').trim(), 'Crew');
+            const dubbingStudios = parseJSONWithFix(formData.get('dubbingStudiosData').trim(), 'Dubbing Studios');
+            const trailers = parseJSONWithFix(formData.get('trailersData').trim(), 'Trailers');
+            const platforms = parseJSONWithFix(formData.get('platformsData').trim(), 'Platforms');
+            
+            const postData = {
+                id: formData.get('id') ? parseInt(formData.get('id')) : undefined,
+                title: formData.get('title'),
+                year: formData.get('year'),
+                season: formData.get('season'),
+                rating: formData.get('rating'),
+                ageRating: formData.get('ageRating') || 'PG-13',
+                poster: formData.get('poster'),
+                backdrop: formData.get('backdrop'),
+                genres: formData.get('genres'),
+                synopsis: formData.get('synopsis'),
+                studio: formData.get('studio'),
+                format: formData.get('format'),
+                duration: formData.get('duration'),
+                totalEpisodes: formData.get('totalEpisodes'),
+                premiereDate: formData.get('premiereDate') || `Released on ${formData.get('year')}`,
+                status: formData.get('status') || 'Completed',
+                broadcast: formData.get('broadcast') || 'OTT',
+                language: formData.get('language') || 'Telugu Dub Available',
+                airSeason: formData.get('airSeason') || 'Unknown',
+                mrp: formData.get('mrp') || 'none',
+                viewCount: formData.get('viewCount') || '0',
+                categories: formData.get('genres') ? formData.get('genres').split(',').map(g => g.trim()) : [],
+                labels: ["Telugu Dub"],
+                statistics: {
+                    rating: formData.get('statRating') || formData.get('rating') || "N/A",
+                    likedPercentage: formData.get('likedPercentage') || "N/A",
+                    totalViews: formData.get('totalViews') || "0"
+                },
+                cast: cast,
+                crew: crew,
+                dubbingStudios: dubbingStudios,
+                trailers: trailers,
+                platforms: platforms
+            };
+            
+            await window.postsManager.savePost(postData);
+            showSuccessMessage(postData.id ? 'Post updated successfully!' : 'Post created successfully!');
+            resetForm();
+            await loadPostsList();
+        });
+
+        // Initialize
+        loadPostsList();
+        setupPostsSearch();
+        
+        // Publish to GitHub (Generate posts-data.js)
+        function publishToGitHub() {
+            const count = window.postsManager.generatePostsDataFile();
+            
+            showSuccessMessage(`✅ Generated posts-data.js with ${count} posts!`);
+            
+            setTimeout(() => {
+                alert(`📁 File Downloaded: posts-data.js\n\n✅ ${count} posts included\n\nNext Steps:\n1. Replace old posts-data.js with this file\n2. Upload to GitHub:\n   - Go to github.com/your-repo\n   - Upload posts-data.js\n   - Commit changes\n\n🎉 Everyone will see your posts!`);
+            }, 500);
+        }
+        
+        // Export/Import Functions (for backup)
+        function exportAllData() {
+            const exportData = {
+                posts: localStorage.getItem('tadb_posts'),
+                scheduleData: localStorage.getItem('tadb_schedule'),
+                contentCreators: localStorage.getItem('tadb_creators'),
+                voiceArtists: localStorage.getItem('tadb_voice_artists'),
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+            
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `tadb-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            showSuccessMessage('Backup exported successfully!');
+        }
+        
+        function importAllData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    // Import all data
+                    if (importData.posts) localStorage.setItem('tadb_posts', importData.posts);
+                    if (importData.scheduleData) localStorage.setItem('tadb_schedule', importData.scheduleData);
+                    if (importData.contentCreators) localStorage.setItem('tadb_creators', importData.contentCreators);
+                    if (importData.voiceArtists) localStorage.setItem('tadb_voice_artists', importData.voiceArtists);
+                    
+                    showSuccessMessage('Data imported successfully! Reloading page...');
+                    setTimeout(() => location.reload(), 1500);
+                } catch (error) {
+                    showErrorMessage('Failed to import data. Please check the file format.');
+                    console.error('Import error:', error);
+                }
+            };
+            reader.readAsText(file);
+        }
+    </script>
+
+    <!-- Password Protection -->
+    <div id="passwordModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(10px);">
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: modalFadeIn 0.3s ease;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 25px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.8rem;">Editor Access</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Enter password to access post editor</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 15px; border: 2px solid var(--border-color); border-radius: 10px; background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; margin-bottom: 10px; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()"/>
+            <div id="errorMessage" style="color: #e74c3c; margin-bottom: 20px; font-size: 0.9rem; min-height: 20px; display: none;"><i class="fas fa-exclamation-circle"></i> Incorrect password!</div>
+            <button onclick="checkPassword()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fas fa-unlock"></i> Unlock Editor</button>
+            <a href="index.html" style="display: block; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+        </div>
+    </div>
+
+    <style>
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
+        #passwordInput:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
+    </style>
+
+    <script src="auth-hash.js"></script>
+    <script>
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const modal = document.getElementById('passwordModal');
+            const isValid = await window.AuthHash.verifyPassword(input.value);
+            if (isValid) {
+                window.AuthHash.setSession();
+                modal.style.animation = 'modalFadeOut 0.3s ease';
+                setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
+            } else {
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = '#e74c3c';
+                const modalContent = modal.querySelector('div > div');
+                modalContent.classList.add('shake');
+                setTimeout(() => { modalContent.classList.remove('shake'); input.style.borderColor = 'var(--border-color)'; }, 500);
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.AuthHash.isSessionValid()) {
+                document.getElementById('passwordModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                document.body.style.overflow = 'hidden';
+                document.getElementById('passwordInput').focus();
+            }
+        });
+        function logout() { window.AuthHash.logout(); }
+    </script>
+</body>
+</html>

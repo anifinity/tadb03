@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TADB Ratings - Telugu Anime Database</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tadb-ratings-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="voice-artists-real.html" class="nav-link">
+                    <i class="fas fa-microphone nav-icon"></i>
+                    <span>Voice Artists</span>
+                </a>
+                <a href="anime-schedule.html" class="nav-link">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="tadb-ratings.html" class="nav-link active">
+                    <i class="fas fa-star nav-icon"></i>
+                    <span>IMDb Ratings</span>
+                </a>
+                <a href="about-us.html" class="nav-link">
+                    <i class="fas fa-info-circle nav-icon"></i>
+                    <span>About</span>
+                </a>
+                <a href="contact-us.html" class="nav-link">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <button class="search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchBox">
+            <div class="search-container">
+                <input type="text" placeholder="Search anime..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html" class="mobile-nav-link">
+            <i class="fas fa-home mobile-nav-icon"></i>
+            <span>Home</span>
+        </a>
+        <a href="voice-artists-real.html" class="mobile-nav-link">
+            <i class="fas fa-microphone mobile-nav-icon"></i>
+            <span>Voice Artists</span>
+        </a>
+        <a href="anime-schedule.html" class="mobile-nav-link">
+            <i class="fas fa-calendar mobile-nav-icon"></i>
+            <span>Schedule</span>
+        </a>
+        <a href="tadb-ratings.html" class="mobile-nav-link active">
+            <i class="fas fa-star mobile-nav-icon"></i>
+            <span>IMDb Ratings</span>
+        </a>
+        <a href="about-us.html" class="mobile-nav-link">
+            <i class="fas fa-info-circle mobile-nav-icon"></i>
+            <span>About</span>
+        </a>
+        <a href="contact-us.html" class="mobile-nav-link">
+            <i class="fas fa-envelope mobile-nav-icon"></i>
+            <span>Contact Us</span>
+        </a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ratings-container">
+        <!-- Header -->
+        <div class="ratings-header">
+            <h1>
+                <span>CRUNCHYROLL TELUGU DUBS RANKED BY</span>
+                <span class="imdb-badge">IMDb</span>
+                <span>RATINGS</span>
+            </h1>
+            
+        </div>
+
+        <!-- Ratings List -->
+        <div class="ratings-list" id="ratingsList">
+            <!-- Ratings will be loaded here -->
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination">
+            <!-- Pagination will be generated here -->
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-text">
+            <h2>TELUGU ANIME DATABASE</h2>
+            <p>ADDED EVERY CRUNCHYROLL TELUGU DUB ANIME TO IMDB</p>
+        </div>
+    </div>
+
+    <script src="posts-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="tadb-ratings-script.js"></script>
+</body>
+</html>

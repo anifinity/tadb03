@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Creators Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #667eea;
+        }
+        .creator-card {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            border: 2px solid #667eea;
+        }
+        .creator-card h2 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        pre {
+            background: #1a1a1a;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #764ba2;
+        }
+        .success {
+            color: #27ae60;
+        }
+        .error {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Creators Data Test Page</h1>
+        <p>This page shows the current state of creators data in localStorage</p>
+        
+        <div>
+            <button class="btn" onclick="loadData()">🔄 Reload Data</button>
+            <button class="btn" onclick="clearData()">🗑️ Clear All Data</button>
+            <button class="btn" onclick="reinitialize()">🔧 Reinitialize Default Data</button>
+        </div>
+        
+        <div id="status"></div>
+        <div id="creatorsContainer"></div>
+    </div>
+
+    <script src="creators-manager.js"></script>
+    <script>
+        function loadData() {
+            const statusDiv = document.getElementById('status');
+            const container = document.getElementById('creatorsContainer');
+            
+            if (!window.creatorsManager) {
+                statusDiv.innerHTML = '<p class="error">❌ creators-manager.js not loaded!</p>';
+                return;
+            }
+            
+            const creators = window.creatorsManager.getAllCreators();
+            
+            if (!creators || creators.length === 0) {
+                statusDiv.innerHTML = '<p class="error">❌ No creators found in localStorage</p>';
+                container.innerHTML = '';
+                return;
+            }
+            
+            statusDiv.innerHTML = `<p class="success">✅ Found ${creators.length} creators in localStorage</p>`;
+            
+            container.innerHTML = creators.map(creator => `
+                <div class="creator-card">
+                    <h2>${creator.name} (ID: ${creator.id})</h2>
+                    <p><strong>Role:</strong> ${creator.role}</p>
+                    <p><strong>Data Creator ID:</strong> ${creator.dataCreator || 'NOT SET'}</p>
+                    <p><strong>Avatar:</strong> ${creator.avatar ? '✅ Set' : '❌ Not set'}</p>
+                    <p><strong>Bio:</strong> ${creator.bio || 'Not set'}</p>
+                    <p><strong>Badge:</strong> ${creator.badge || 'Not set'}</p>
+                    <p><strong>Stats:</strong> ${creator.stats ? '✅ Set' : '❌ Not set'}</p>
+                    <p><strong>Social Links:</strong> ${creator.social ? '✅ Set' : '❌ Not set'}</p>
+                    <p><strong>Suggested Animes:</strong> ${creator.suggestedAnimes ? creator.suggestedAnimes.length + ' animes' : '❌ Not set'}</p>
+                    <p><strong>Latest Videos:</strong> ${creator.latestVideos ? creator.latestVideos.length + ' videos' : '❌ Not set'}</p>
+                    <details>
+                        <summary>View Full JSON</summary>
+                        <pre>${JSON.stringify(creator, null, 2)}</pre>
+                    </details>
+                </div>
+            `).join('');
+        }
+        
+        function clearData() {
+            if (confirm('Are you sure you want to clear all creators data?')) {
+                localStorage.removeItem('tadb_creators');
+                loadData();
+                alert('Data cleared! Refresh the page to reinitialize.');
+            }
+        }
+        
+        function reinitialize() {
+            if (confirm('This will reset all creators to default data. Continue?')) {
+                localStorage.removeItem('tadb_creators');
+                window.creatorsManager.init();
+                loadData();
+                alert('Data reinitialized with defaults!');
+            }
+        }
+        
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', loadData);
+    </script>
+</body>
+</html>

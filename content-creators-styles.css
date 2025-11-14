@@ -1,0 +1,3900 @@
+/* Content Creators Page Styles with Dark/Light Mode Support */
+
+/* CSS Variables for Theme System */
+:root {
+    /* Dark Theme (Default) */
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.8);
+    --text-muted: rgba(255, 255, 255, 0.6);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --card-hover: rgba(255, 255, 255, 0.08);
+    --accent-primary: #133978;
+    --accent-secondary: #1e4fa1;
+    --nav-bg: #133978;
+    --gradient-primary: linear-gradient(135deg, #133978, #1e4fa1);
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.2);
+    --shadow-heavy: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] {
+    /* Light Theme */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #e2e8f0;
+    --bg-tertiary: #cbd5e1;
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --card-hover: rgba(0, 0, 0, 0.05);
+    --accent-primary: #133978;
+    --accent-secondary: #1e4fa1;
+    --nav-bg: #133978;
+    --gradient-primary: linear-gradient(135deg, #133978, #1e4fa1);
+    --shadow-light: rgba(19, 57, 120, 0.1);
+    --shadow-medium: rgba(19, 57, 120, 0.2);
+    --shadow-heavy: rgba(19, 57, 120, 0.3);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--accent-primary) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, var(--accent-secondary) 0.5px, transparent 0.5px);
+    background-size: 60px 60px;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: -1;
+    animation: patternFloat 25s linear infinite;
+}
+
+[data-theme="light"] body::before {
+    opacity: 0.04;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--accent-primary) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 75% 75%, var(--accent-secondary) 0.4px, transparent 0.4px);
+}
+
+/* Ensure consistent font across all elements */
+h1, h2, h3, h4, h5, h6, p, span, div, a, button, input {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Navigation */
+.navbar {
+    background-color: var(--nav-bg);
+    padding: 0.8rem 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px var(--shadow-heavy);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    position: relative;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.nav-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+    justify-content: flex-end;
+}
+
+.back-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(-2px);
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.logo:hover {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+
+
+.search-toggle,
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-toggle:hover,
+.theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Search Box */
+.search-box {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--nav-bg);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    padding: 1rem;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.search-box.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.search-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 50px 12px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-primary);
+    font-size: 16px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: var(--accent-primary);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.search-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent-primary);
+    border: 1px solid var(--accent-primary);
+    border-radius: 50%;
+    color: white;
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* Modern Hero Section */
+.creators-hero {
+    position: relative;
+    min-height: 100vh;
+    padding: 120px 0 0px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 200vh;
+    z-index: -1;
+}
+
+.hero-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.15;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--accent-primary) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, var(--accent-secondary) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: patternFloat 25s linear infinite;
+}
+
+[data-theme="light"] .hero-pattern {
+    opacity: 0.08;
+    background-image: 
+        radial-gradient(circle at 25% 25%, var(--accent-primary) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 75% 75%, var(--accent-secondary) 1px, transparent 1px);
+}
+
+.hero-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        var(--bg-primary) 0%, 
+        rgba(19, 57, 120, 0.1) 20%,
+        rgba(30, 79, 161, 0.05) 50%,
+        rgba(19, 57, 120, 0.08) 80%,
+        var(--bg-primary) 100%);
+}
+
+[data-theme="light"] .hero-gradient {
+    background: linear-gradient(180deg, 
+        var(--bg-primary) 0%, 
+        rgba(19, 57, 120, 0.03) 20%,
+        rgba(30, 79, 161, 0.02) 50%,
+        rgba(19, 57, 120, 0.04) 80%,
+        var(--bg-primary) 100%);
+}
+
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.floating-icon {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    opacity: 0.1;
+    animation: float 8s ease-in-out infinite;
+}
+
+.icon-1 {
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.icon-2 {
+    top: 60%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.icon-3 {
+    bottom: 30%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+.icon-4 {
+    top: 40%;
+    right: 25%;
+    animation-delay: 6s;
+}
+
+@keyframes patternFloat {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    100% { transform: translate(60px, 60px) rotate(360deg); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.creators-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.text-hero-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hero-intro {
+    margin-bottom: 1rem;
+}
+
+.intro-label {
+    display: inline-block;
+    background: none;
+    color: white;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.main-title-section {
+    margin: 2rem 0;
+}
+
+.large-title {
+    font-size: 5rem;
+    font-weight: 900;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: 3px;
+}
+
+.title-word {
+    display: block;
+    color: var(--text-primary);
+}
+
+.title-word.highlight {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.title-underline {
+    width: 200px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    margin: 1rem auto;
+    border-radius: 2px;
+}
+
+.description-section {
+    margin: 2rem 0;
+}
+
+.main-description {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px var(--shadow-medium);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.cta-primary,
+.cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.cta-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    box-shadow: 0 8px 25px rgba(19, 57, 120, 0.3);
+}
+
+.cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(19, 57, 120, 0.4);
+}
+
+.cta-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.cta-secondary:hover {
+    background: var(--card-hover);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+}
+
+.hero-visual {
+    position: relative;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.creator-showcase {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.showcase-card {
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px var(--shadow-medium);
+    transition: all 0.4s ease;
+}
+
+.card-main {
+    width: 300px;
+    height: 380px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.main-card-content {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.creator-avatar {
+    width: 100px;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.creator-info h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 2px;
+}
+
+.creator-info p {
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0;
+    opacity: 0.9;
+}
+
+.creator-badges {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.card-secondary {
+    width: 140px;
+    height: 140px;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.card-1 {
+    top: 5%;
+    left: 5%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.card-2 {
+    top: 15%;
+    right: 5%;
+    animation: float 6s ease-in-out infinite 2s;
+}
+
+.card-3 {
+    bottom: 25%;
+    left: 15%;
+    animation: float 6s ease-in-out infinite 4s;
+}
+
+.card-4 {
+    bottom: 5%;
+    right: 20%;
+    animation: float 6s ease-in-out infinite 6s;
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--text-primary);
+    text-align: center;
+    width: 100%;
+}
+
+.skill-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-content span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.skill-level {
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.skill-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 2px;
+    animation: skillLoad 2s ease-out;
+}
+
+@keyframes skillLoad {
+    from { width: 0%; }
+    to { width: var(--skill-width, 100%); }
+}
+
+.showcase-card:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 25px 50px var(--shadow-heavy);
+}
+
+.geometric-shapes {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.shape {
+    position: absolute;
+    opacity: 0.1;
+    animation: shapeFloat 12s ease-in-out infinite;
+}
+
+.shape-1 {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(45deg, var(--accent-primary), transparent);
+    border-radius: 50%;
+    top: 20%;
+    right: 30%;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 60px;
+    height: 60px;
+    background: var(--accent-secondary);
+    transform: rotate(45deg);
+    top: 70%;
+    left: 25%;
+    animation-delay: 3s;
+}
+
+.shape-3 {
+    width: 100px;
+    height: 100px;
+    border: 3px solid var(--accent-primary);
+    border-radius: 50%;
+    top: 40%;
+    right: 10%;
+    animation-delay: 6s;
+}
+
+.shape-4 {
+    width: 0;
+    height: 0;
+    border-left: 30px solid transparent;
+    border-right: 30px solid transparent;
+    border-bottom: 50px solid var(--accent-secondary);
+    top: 60%;
+    right: 40%;
+    animation-delay: 9s;
+}
+
+@keyframes shapeFloat {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+        opacity: 0.1;
+    }
+    50% { 
+        transform: translateY(-30px) rotate(180deg); 
+        opacity: 0.2;
+    }
+}
+
+/* Creator Navigation */
+.creator-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    flex-wrap: nowrap;
+}
+
+.nav-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-arrow:hover {
+    background: var(--card-hover);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.creator-switches {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.creator-switch-btn {
+    padding: 12px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.creator-switch-btn:hover {
+    background: var(--card-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.creator-switch-btn.active {
+    background: var(--gradient-primary);
+    color: #ffffff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 15px var(--shadow-medium);
+}/* Cr
+eator Profiles */
+.creator-details-panel {
+    position: relative;
+    min-height: 400px;
+}
+
+.creator-profile {
+    display: none;
+    animation: fadeInUp 0.6s ease;
+}
+
+.creator-profile.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.creator-card {
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+    padding: 2rem 2rem 0 2rem;
+    text-align: center;
+    backdrop-filter: none;
+    transition: all 0.3s ease;
+    box-shadow: none;
+}
+
+.creator-card:hover {
+    background: transparent;
+    transform: translateY(-5px);
+    box-shadow: none;
+}
+
+.creator-image-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+}
+
+.creator-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--accent-primary);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    transition: all 0.3s ease;
+}
+
+.creator-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 35px var(--shadow-heavy);
+}
+
+.creator-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: var(--gradient-primary);
+    color: #ffffff;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 8px var(--shadow-medium);
+}
+
+.creator-info {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.creator-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.creator-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.creator-social {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 12px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    background: var(--card-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px var(--shadow-medium);
+}
+
+.social-link.instagram:hover {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+.social-link.youtube:hover {
+    background: #ff0000;
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Sections */
+.suggested-anime-section {
+    padding: 0;
+    position: relative;
+    margin: 0;
+    background: transparent;
+}
+
+.suggested-anime-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, 
+        transparent 0%,
+        rgba(19, 57, 120, 0.02) 50%,
+        transparent 100%);
+    pointer-events: none;
+    z-index: -1;
+}
+
+[data-theme="light"] .suggested-anime-section::before {
+    background: linear-gradient(180deg, 
+        transparent 0%,
+        rgba(19, 57, 120, 0.01) 50%,
+        transparent 100%);
+}
+
+.youtube-section {
+    padding: 60px 0;
+    position: relative;
+    background: transparent;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    opacity: 0.9;
+}/* 
+Anime Grid */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.anime-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+.anime-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+.anime-image-container {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+}
+
+.anime-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.anime-card:hover .anime-image {
+    transform: scale(1.05);
+}
+
+.anime-rating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffd700;
+    padding: 4px 8px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    backdrop-filter: blur(10px);
+}
+
+.anime-info {
+    padding: 1rem;
+}
+
+.anime-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+.anime-genre {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+/* Videos Grid */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.video-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+.video-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px var(--shadow-medium);
+}
+
+.video-thumbnail {
+    position: relative;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+}
+
+.video-thumbnail iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.video-card:hover .video-thumbnail iframe {
+    transform: scale(1.02);
+}
+
+.video-duration {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+}
+
+.video-info {
+    padding: 1rem;
+}
+
+.video-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.video-channel {
+    font-size: 0.9rem;
+    color: #133978 !important;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+/* Light mode - #133978 color */
+[data-theme="light"] .video-channel,
+html:not([data-theme="dark"]) .video-channel {
+    color: #133978 !important;
+}
+
+/* Dark mode - White color for video-channel */
+[data-theme="dark"] .video-channel {
+    color: #ffffff !important;
+}
+
+.video-views {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.8;
+}
+
+/* Footer */
+.footer {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 60px;
+}
+
+.disclaimer-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.disclaimer-section h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.disclaimer-section p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 20px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Large Indian Phones - iPhone Pro Max, OnePlus Pro, Samsung Galaxy S-series (430px-768px) */
+@media (min-width: 431px) and (max-width: 768px) {
+    .creators-container {
+        padding: 0;
+    }
+    
+    .creators-title {
+        font-size: 2.2rem;
+    }
+    
+    .creator-card {
+        padding: 1.5rem;
+    }
+    
+    .creator-name {
+        font-size: 1.1rem;
+    }
+    
+    .creator-role {
+        font-size: 0.9rem;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .creators-hero {
+        padding: 120px 0 20px;
+        min-height: 80vh;
+    }
+    
+    .hero-background {
+        height: 120vh;
+    }
+    
+    .creators-container {
+        padding: 0;
+    }
+    
+    .large-title {
+        font-size: 3.5rem;
+    }
+    
+    .main-description {
+        font-size: 1.1rem;
+    }
+    
+    .creators-list {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .creator-text-card {
+        padding: 1.5rem;
+    }
+    
+    .creator-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .stats-text-section {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+    
+    .action-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .text-cta-primary,
+    .text-cta-secondary {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .creators-title {
+        font-size: 1.8rem;
+    }
+    
+    .creators-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .creators-header {
+        margin-bottom: 20px;
+    }
+    
+    .creator-navigation {
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .creator-switches {
+        gap: 0.4rem;
+    }
+    
+    .creator-switch-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+    
+    .creator-card {
+        padding: 1rem;
+    }
+    
+    .creator-name {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .creator-description {
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+    }
+    
+    .creator-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .creator-badge {
+        font-size: 8px;
+        padding: 3px 8px;
+    }
+    
+    .social-link {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .anime-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.8rem !important;
+    }
+    
+    .anime-card-box {
+        padding: 0.6rem;
+        gap: 0.6rem;
+    }
+    
+    .anime-image-left {
+        width: 60px;
+        height: 75px;
+    }
+    
+    .anime-name {
+        font-size: 0.9rem;
+    }
+    
+    .anime-platform {
+        font-size: 0.75rem;
+    }
+    
+    .anime-meta {
+        gap: 0.4rem;
+    }
+    
+    .anime-rating-box,
+    .anime-episodes {
+        font-size: 0.7rem;
+    }
+    
+    .anime-genre-tag {
+        font-size: 0.65rem;
+        padding: 1px 5px;
+    }
+    
+    .videos-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        padding: 0 1rem;
+    }
+    
+    .video-card {
+        margin-bottom: 0.5rem;
+    }
+    
+    .video-info {
+        padding: 0.8rem;
+    }
+    
+    .video-title {
+        font-size: 0.9rem;
+    }
+    
+    .video-channel {
+        font-size: 0.8rem;
+    }
+    
+    .video-views {
+        font-size: 0.7rem;
+    }
+    
+    .section-title {
+        font-size: 1.4rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .section-header {
+        margin-bottom: 1rem;
+    }
+    
+    .suggested-anime-section,
+    .youtube-section {
+        padding: 30px 0;
+    }
+
+    .disclaimer-section h4 {
+        font-size: 1rem;
+    }
+
+    .disclaimer-section p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
+
+/* Indian Phone Optimizations */
+/* Samsung Galaxy A-series, Vivo Y-series, Oppo A-series, Realme budget phones (360px-390px) */
+@media (min-width: 360px) and (max-width: 390px) {
+    .creators-container {
+        padding: 0;
+    }
+    
+    .creators-title {
+        font-size: 1.8rem;
+    }
+    
+    .creator-card {
+        padding: 1rem;
+    }
+    
+    .creator-name {
+        font-size: 0.95rem;
+    }
+    
+    .creator-role {
+        font-size: 0.8rem;
+    }
+}
+
+/* iPhone 12/13/14, OnePlus Nord, Realme flagship phones (390px-430px) */
+@media (min-width: 391px) and (max-width: 430px) {
+    .creators-container {
+        padding: 0;
+    }
+    
+    .creators-title {
+        font-size: 2rem;
+    }
+    
+    .creator-card {
+        padding: 1.2rem;
+    }
+    
+    .creator-name {
+        font-size: 1rem;
+    }
+    
+    .creator-role {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .creators-container {
+        padding: 0;
+    }
+    
+    .creators-hero {
+        padding: 110px 0 10px;
+        min-height: 70vh;
+    }
+    
+    .hero-background {
+        height: 110vh;
+    }
+    
+    .creators-container {
+        padding: 0;
+    }
+    
+    .large-title {
+        font-size: 2.8rem;
+        letter-spacing: 2px;
+    }
+    
+    .main-description {
+        font-size: 1rem;
+    }
+    
+    .creator-text-card {
+        padding: 1.2rem;
+    }
+    
+    .creator-header h2 {
+        font-size: 1.3rem;
+    }
+    
+    .creator-bio {
+        font-size: 0.9rem;
+    }
+    
+    .skill {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.8rem;
+    }
+    
+    .stats-text-section {
+        gap: 1.5rem;
+        padding: 1.2rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .stat-text {
+        font-size: 0.9rem;
+    }
+    
+    .text-cta-primary,
+    .text-cta-secondary {
+        padding: 1rem 2rem;
+        font-size: 0.9rem;
+    }
+    
+    .creators-title {
+        font-size: 1.5rem;
+    }
+    
+    .creators-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .creators-header {
+        margin-bottom: 15px;
+    }
+    
+    .main-title-container {
+        gap: 0.4rem;
+    }
+    
+    .title-icon-animated {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .creator-navigation {
+        flex-direction: row;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+    
+    .nav-arrow {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .creator-switches {
+        order: 0;
+        flex: 1;
+        min-width: 180px;
+        justify-content: center;
+        gap: 0.3rem;
+    }
+    
+    .creator-switch-btn {
+        padding: 6px 10px;
+        font-size: 9px;
+        min-width: 60px;
+    }
+    
+    .creator-card {
+        padding: 0.8rem;
+    }
+    
+    .creator-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .creator-name {
+        font-size: 1.1rem;
+        margin-bottom: 0.4rem;
+    }
+    
+    .creator-description {
+        font-size: 0.75rem;
+        margin-bottom: 0.8rem;
+    }
+    
+    .creator-badge {
+        font-size: 7px;
+        padding: 2px 6px;
+    }
+    
+    .social-link {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .anime-grid {
+        grid-template-columns: 1fr !important;
+        gap: 0.6rem !important;
+    }
+    
+    .anime-card-box {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .anime-image-left {
+        width: 50px;
+        height: 65px;
+    }
+    
+    .anime-name {
+        font-size: 0.8rem;
+    }
+    
+    .anime-platform {
+        font-size: 0.7rem;
+    }
+    
+    .anime-meta {
+        gap: 0.3rem;
+    }
+    
+    .anime-rating-box,
+    .anime-episodes {
+        font-size: 0.65rem;
+    }
+    
+    .anime-genre-tag {
+        font-size: 0.6rem;
+        padding: 1px 4px;
+    }
+    
+    .videos-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.6rem;
+        padding: 0 1.2rem;
+    }
+    
+    .video-card {
+        margin-bottom: 0.3rem;
+    }
+    
+    .video-info {
+        padding: 0.6rem;
+    }
+    
+    .video-title {
+        font-size: 0.8rem;
+    }
+    
+    .video-channel {
+        font-size: 0.7rem;
+    }
+    
+    .video-views {
+        font-size: 0.65rem;
+    }
+    
+    .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 0.2rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.75rem;
+    }
+    
+    .section-header {
+        margin-bottom: 0.8rem;
+    }
+    
+    .suggested-anime-section,
+    .youtube-section {
+        padding: 20px 0;
+    }
+
+    .disclaimer-section h4 {
+        font-size: 0.9rem;
+    }
+
+    .disclaimer-section p {
+        font-size: 0.75rem;
+        line-height: 1.3;
+    }
+}
+
+/* Theme Toggle Animation */
+.theme-toggle i {
+    transition: all 0.3s ease;
+}
+
+[data-theme="light"] .theme-toggle i:before {
+    content: "\f185"; /* sun icon */
+}
+
+/* Search Toggle Animation */
+.search-toggle.active {
+    background: var(--accent-primary);
+    color: #ffffff;
+}
+
+/* Smooth Transitions */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}/*
+ Anime Grid - Box Format (Override) */
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem !important;
+    margin-bottom: 2rem;
+}
+
+.anime-card-box {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px var(--shadow-light);
+}
+
+.anime-card-box:hover {
+    background: var(--card-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px var(--shadow-medium);
+    border-color: var(--accent-primary);
+}
+
+.anime-image-left {
+    flex-shrink: 0;
+    width: 80px;
+    height: 100px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.anime-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all 0.3s ease;
+}
+
+.anime-card-box:hover .anime-poster {
+    transform: scale(1.05);
+}
+
+.anime-details-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.anime-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.anime-platform {
+    font-size: 0.9rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Dark mode override for anime-platform */
+[data-theme="dark"] .anime-platform {
+    color: #ffffff !important;
+}
+
+.anime-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.anime-rating-box {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #ffd700;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.anime-rating-box i {
+    font-size: 0.8rem;
+}
+
+.anime-episodes {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.anime-genre-tag {
+    background: var(--accent-primary);
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Light Mode Adjustments for Anime Boxes */
+[data-theme="light"] .anime-card-box {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(19, 57, 120, 0.2);
+}
+
+[data-theme="light"] .anime-card-box:hover {
+    background: rgba(255, 255, 255, 1);
+    border-color: var(--accent-primary);
+    box-shadow: 0 8px 30px rgba(19, 57, 120, 0.15);
+}
+
+/* Responsive Design for Anime Boxes */
+@media (max-width: 768px) {
+    .anime-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+        padding: 0 1rem;
+    }
+    
+    .anime-card-box {
+        padding: 0.75rem;
+        gap: 0.75rem;
+    }
+    
+    .anime-image-left {
+        width: 70px;
+        height: 90px;
+    }
+    
+    .anime-name {
+        font-size: 1rem;
+    }
+    
+    .anime-meta {
+        gap: 0.5rem;
+    }
+    
+    .anime-genre-tag {
+        font-size: 0.7rem;
+        padding: 1px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .anime-grid {
+        padding: 0 1.2rem;
+    }
+    
+    .anime-card-box {
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    
+    .anime-image-left {
+        width: 60px;
+        height: 80px;
+    }
+    
+    .anime-name {
+        font-size: 0.9rem;
+    }
+    
+    .anime-platform {
+        font-size: 0.8rem;
+    }
+    
+    .anime-rating-box,
+    .anime-episodes {
+        font-size: 0.75rem;
+    }
+}
+
+/* Fix navigation alignment */
+@media (max-width: 768px) {
+    .creator-navigation {
+        flex-direction: row !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .creator-switches {
+        display: flex;
+        gap: 0.5rem;
+        flex: 1;
+        justify-content: center;
+        max-width: none;
+    }
+    
+    .nav-arrow {
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Make navbar smaller */
+    .navbar {
+        padding: 0.5rem 0;
+    }
+    
+    .nav-container {
+        height: 50px;
+        padding: 0 0.8rem;
+    }
+    
+    .logo {
+        font-size: 1.3rem;
+    }
+    
+    .back-toggle,
+    .search-toggle,
+    .theme-toggle {
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .creator-navigation {
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    .creator-switches {
+        gap: 0.25rem;
+    }
+    
+    .creator-switch-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+}/* Ha
+ndle 4 creators instead of 3 */
+.creator-switches {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.creator-switch-btn {
+    padding: 12px 20px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    min-width: 100px;
+}
+
+/* Responsive adjustments for 4 creators */
+@media (max-width: 768px) {
+    .creator-switches {
+        gap: 0.5rem;
+        max-width: 100%;
+    }
+    
+    .creator-switch-btn {
+        padding: 10px 14px;
+        font-size: 11px;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .creator-switches {
+        gap: 0.25rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .creator-switch-btn {
+        padding: 8px 10px;
+        font-size: 10px;
+        min-width: 70px;
+    }
+}
+
+/* Merged Section Styling */
+.creators-section {
+    position: relative;
+    margin-top: -120px;
+    padding-top: 120px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    
+    z-index: 1;
+}
+
+.creator-details-panel {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.suggested-anime-section {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+.suggested-anime-section .section-header {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: 1rem;
+}
+
+.youtube-section {
+    margin-top: 0;
+    padding-top: 30px;
+}
+
+.anime-grid {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Mobile Section Spacing */
+@media (max-width: 768px) {
+    .creators-section {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        margin-top: -100px;
+        padding-top: 100px;
+    }
+    
+    .creator-details-panel {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .suggested-anime-section {
+        margin-top: 0;
+        padding-top: 0;
+    }
+    
+    .youtube-section {
+        margin-top: 0;
+        padding-top: 25px;
+    }
+    
+    .hero-background {
+        height: 180vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .creators-section {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        margin-top: -80px;
+        padding-top: 80px;
+    }
+    
+    .creator-details-panel {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+    
+    .suggested-anime-section {
+        margin-top: 0;
+        padding-top: 0;
+    }
+    
+    .youtube-section {
+        margin-top: 0;
+        padding-top: 20px;
+    }
+    
+    .hero-background {
+        height: 160vh;
+    }
+}
+
+/* Ultra Small Budget Phones (320px and below) */
+@media (max-width: 320px) {
+    .creators-container {
+        padding: 0;
+    }
+    
+    .creators-hero {
+        padding: 100px 0 0px;
+        min-height: 60vh;
+    }
+    
+    .hero-background {
+        height: 100vh;
+    }
+    
+    .creators-container {
+        padding: 0;
+    }
+    
+    .intro-label {
+        font-size: 0.9rem;
+        padding: 0.6rem 1.5rem;
+    }
+    
+    .large-title {
+        font-size: 2.2rem;
+        letter-spacing: 1px;
+    }
+    
+    .main-description {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .creators-list {
+        gap: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .creator-text-card {
+        padding: 1rem;
+    }
+    
+    .creator-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.8rem;
+    }
+    
+    .creator-header h2 {
+        font-size: 1.2rem;
+    }
+    
+    .role {
+        font-size: 0.9rem;
+    }
+    
+    .creator-bio {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    
+    .skill {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+    }
+    
+    .stats-text-section {
+        gap: 1rem;
+        padding: 1rem;
+        margin: 2rem 0;
+    }
+    
+    .stat-number {
+        font-size: 1.8rem;
+    }
+    
+    .stat-text {
+        font-size: 0.8rem;
+    }
+    
+    .text-cta-primary,
+    .text-cta-secondary {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.85rem;
+    }
+    
+    .creators-title {
+        font-size: 1.3rem;
+    }
+    
+    .creators-subtitle {
+        font-size: 0.7rem;
+    }
+    
+    .creators-header {
+        margin-bottom: 10px;
+    }
+    
+    .creator-card {
+        padding: 0.6rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .creator-name {
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .creator-description {
+        font-size: 0.65rem;
+        margin-bottom: 0.6rem;
+    }
+    
+    .creator-image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .creator-badge {
+        font-size: 6px;
+        padding: 1px 4px;
+    }
+    
+    .creator-switches {
+        gap: 0.2rem;
+    }
+    
+    .creator-switch-btn {
+        padding: 5px 8px;
+        font-size: 8px;
+        min-width: 50px;
+    }
+    
+    .social-link {
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+    
+    .anime-grid {
+        padding: 0 1.5rem;
+    }
+    
+    .anime-card-box {
+        padding: 0.4rem;
+        gap: 0.4rem;
+    }
+    
+    .anime-image-left {
+        width: 45px;
+        height: 55px;
+    }
+    
+    .anime-name {
+        font-size: 0.7rem;
+    }
+    
+    .anime-platform {
+        font-size: 0.65rem;
+    }
+    
+    .anime-rating-box,
+    .anime-episodes {
+        font-size: 0.6rem;
+    }
+    
+    .anime-genre-tag {
+        font-size: 0.55rem;
+        padding: 1px 3px;
+    }
+    
+    .section-title {
+        font-size: 1rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.7rem;
+    }
+    
+    .videos-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+        padding: 0 1.5rem;
+    }
+    
+    .video-info {
+        padding: 0.5rem;
+    }
+    
+    .video-title {
+        font-size: 0.7rem;
+    }
+    
+    .video-channel {
+        font-size: 0.65rem;
+    }
+    
+    .video-views {
+        font-size: 0.6rem;
+    }
+    
+    .suggested-anime-section {
+        padding: 0;
+        margin-top: 0;
+        padding-top: 0;
+    }
+    
+    .youtube-section {
+        padding: 15px 0;
+        margin-top: 15px;
+        padding-top: 10px;
+    }
+    
+    .creators-section {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        margin-top: -60px;
+        padding-top: 60px;
+    }
+    
+    .creator-details-panel {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .disclaimer-section h4 {
+        font-size: 0.8rem;
+    }
+
+    .disclaimer-section p {
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+}
+/* Text
+-Only Creator Cards */
+.creators-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.creator-text-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: left;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.creator-text-card:hover {
+    background: var(--card-hover);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px var(--shadow-medium);
+}
+
+.creator-header {
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--accent-primary);
+    padding-bottom: 1rem;
+}
+
+.creator-header h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: 1px;
+}
+
+.role {
+    color: var(--accent-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.creator-bio {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    margin: 0 0 1.5rem 0;
+}
+
+.creator-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Text Stats Section */
+.stats-text-section {
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    margin: 3rem 0;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 15px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-text-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent-primary);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.stat-text {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Text Action Buttons */
+.action-section {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.text-cta-primary,
+.text-cta-secondary {
+    padding: 1.2rem 3rem;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.text-cta-primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    box-shadow: 0 8px 25px rgba(19, 57, 120, 0.3);
+}
+
+.text-cta-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(19, 57, 120, 0.4);
+}
+
+.text-cta-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--accent-primary);
+}
+
+.text-cta-secondary:hover {
+    background: var(--accent-primary);
+    color: white;
+    transform: translateY(-3px);
+}/* 
+MODERN CONTENT CREATORS DESIGN - RESPONSIVE */
+
+/* Main Section */
+.creators-main {
+    padding: 10rem 0 2rem 0;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+    position: relative;
+}
+
+.creators-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 30%, rgba(19, 57, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(100, 181, 246, 0.08) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(19, 57, 120, 0.03) 50%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.creators-main > .container {
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, var(--accent-primary), #64b5f6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.page-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Creator Name Buttons */
+.creator-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.creator-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.creator-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(19, 57, 120, 0.1), transparent);
+    transition: left 0.5s ease;
+}
+
+.creator-btn:hover::before {
+    left: 100%;
+}
+
+.creator-btn:hover {
+    background: var(--card-hover);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.creator-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 15px rgba(19, 57, 120, 0.3);
+    transform: translateY(-2px);
+}
+
+.creator-btn.active::before {
+    display: none;
+}
+
+/* Creator Profile Container */
+.creator-profile-container {
+    position: relative;
+    min-height: 300px;
+}
+
+.creator-profile {
+    display: none;
+    animation: fadeInUp 0.4s ease;
+}
+
+.creator-profile.active {
+    display: block;
+}
+
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Creators Grid */
+.creators-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+/* Creator Cards */
+.creator-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.creator-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(19, 57, 120, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(100, 181, 246, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.creator-card > * {
+    position: relative;
+    z-index: 1;
+}
+
+.creator-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-primary), #64b5f6);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.creator-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-primary);
+}
+
+.creator-card:hover::before {
+    opacity: 1;
+}
+
+.featured-card {
+    border: 2px solid var(--accent-primary);
+    background: linear-gradient(135deg, var(--card-bg) 0%, rgba(19, 57, 120, 0.08) 50%, rgba(100, 181, 246, 0.05) 100%);
+    box-shadow: 0 8px 32px rgba(19, 57, 120, 0.15);
+}
+
+.featured-card::after {
+    background: 
+        radial-gradient(circle at 30% 20%, rgba(19, 57, 120, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 70% 80%, rgba(100, 181, 246, 0.06) 0%, transparent 50%),
+        linear-gradient(45deg, transparent 30%, rgba(255, 215, 0, 0.02) 50%, transparent 70%);
+}
+
+.featured-card::before {
+    opacity: 1;
+}
+
+/* Creator Avatar */
+.creator-avatar {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 1rem auto;
+}
+
+.creator-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-primary);
+}
+
+.creator-badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.creator-badge i {
+    font-size: 0.6rem;
+}
+
+/* Creator Info */
+.creator-info {
+    text-align: center;
+}
+
+.creator-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.creator-role {
+    font-size: 0.85rem;
+    color: #133978 !important;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Light mode - #133978 color */
+[data-theme="light"] .creator-role,
+html:not([data-theme="dark"]) .creator-role {
+    color: #133978 !important;
+}
+
+/* Dark mode - Gold color for creator role */
+[data-theme="dark"] .creator-role {
+    color: #FFD700 !important;
+}
+
+.creator-description {
+    display: none;
+}
+
+/* Creator Stats */
+.creator-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #ffffff !important;
+    line-height: 1;
+}
+
+/* Light mode - #133978 color */
+[data-theme="light"] .stat-number,
+html:not([data-theme="dark"]) .stat-number {
+    color: #133978 !important;
+}
+
+/* Dark mode - White color for stat-number */
+[data-theme="dark"] .stat-number {
+    color: #ffffff !important;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.25rem;
+}
+
+/* Creator Social */
+.creator-social {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+}
+
+.social-btn.instagram {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: white;
+}
+
+.social-btn.youtube {
+    background: #ff0000;
+    color: white;
+}
+
+.social-btn.twitter {
+    background: #1da1f2;
+    color: white;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px) scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .creators-main {
+        padding: 9rem 0 2rem 0;
+    }
+    
+    .container {
+        padding: 0 1rem;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+    
+    .page-subtitle {
+        font-size: 1rem;
+    }
+    
+    .creators-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .creator-card {
+        padding: 1.5rem;
+    }
+    
+    .creator-stats {
+        gap: 1rem;
+    }
+    
+    .creator-buttons {
+        gap: 0.5rem;
+    }
+    
+    .creator-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}
+
+/* 480px Mobile Responsive */
+@media (max-width: 480px) {
+    .creators-main {
+        padding: 8rem 0 1rem 0;
+    }
+    
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    .page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .page-title {
+        font-size: 1.75rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .creator-buttons {
+        gap: 0.4rem;
+    }
+    
+    .creator-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+    
+    .creators-grid {
+        gap: 1rem;
+    }
+    
+    .creator-card {
+        padding: 1.25rem;
+    }
+    
+    .creator-avatar {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 1rem;
+    }
+    
+    .creator-name {
+        font-size: 1.25rem;
+    }
+    
+    .creator-role {
+        font-size: 0.8rem;
+    }
+    
+    .creator-description {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .creator-stats {
+        gap: 1rem;
+        padding: 0.75rem;
+    }
+    
+    .stat-number {
+        font-size: 1.25rem;
+    }
+    
+    .stat-label {
+        font-size: 0.75rem;
+    }
+    
+    .social-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+}
+
+/* 412px Mobile Responsive */
+@media (max-width: 412px) {
+    /* Make navbar much smaller */
+    .navbar {
+        padding: 0.4rem 0;
+    }
+    
+    .nav-container {
+        height: 45px;
+        padding: 0 0.6rem;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+    }
+    
+    .back-toggle,
+    .search-toggle,
+    .theme-toggle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+    }
+    
+    .nav-left,
+    .nav-right {
+        gap: 0.4rem;
+    }
+    
+    .creators-main {
+        padding: 7.5rem 0 1rem 0;
+    }
+    
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    .page-subtitle {
+        font-size: 0.85rem;
+    }
+    
+    .creator-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+    }
+    
+    .creator-profile-container {
+        min-height: 200px;
+    }
+    
+    .creator-card {
+        padding: 0.8rem;
+    }
+    
+    .creator-avatar {
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 0.6rem auto;
+    }
+    
+    .creator-avatar img {
+        border: 2px solid var(--accent-primary);
+    }
+    
+    .creator-name {
+        font-size: 0.9rem;
+    }
+    
+    .creator-role {
+        font-size: 0.6rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .creator-description {
+        display: none;
+    }
+    
+    .creator-stats {
+        gap: 0.5rem;
+        padding: 0.4rem;
+    }
+    
+    .stat-number {
+        font-size: 0.85rem;
+    }
+    
+    .stat-label {
+        font-size: 0.55rem;
+    }
+    
+    .social-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    
+    .creator-badge {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.5rem;
+    }
+    
+    .creator-badge i {
+        font-size: 0.45rem;
+    }
+}/*
+ SUGGESTED ANIME SECTION */
+.suggested-anime-section {
+    margin-top: 4rem;
+    padding: 3rem 0;
+    position: relative;
+    background: linear-gradient(180deg, transparent 0%, var(--bg-secondary) 20%, var(--bg-tertiary) 100%);
+}
+
+.suggested-anime-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: linear-gradient(180deg, var(--bg-primary) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.suggested-anime-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.suggested-anime-section .section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.suggested-anime-section .section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.suggested-anime-section .section-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+/* Anime Recommendations Grid */
+.anime-recommendations {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.anime-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.anime-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: var(--accent-primary);
+}
+
+.anime-poster {
+    flex-shrink: 0;
+    width: 80px;
+    height: 120px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.anime-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.anime-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.anime-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+}
+
+.anime-platform {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Crunchyroll text color for light mode */
+[data-theme="light"] .anime-platform {
+    color: #133978 !important;
+}
+
+[data-theme="dark"] .anime-platform {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.anime-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.anime-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #f59e0b;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.anime-rating i {
+    font-size: 0.8rem;
+}
+
+.anime-episodes {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.anime-genres {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.genre-tag {
+    background: #133978;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Ensure genre tags are visible in both light and dark mode */
+[data-theme="light"] .genre-tag {
+    background: #133978 !important;
+    color: white !important;
+}
+
+[data-theme="dark"] .genre-tag {
+    background: #133978 !important;
+    color: white !important;
+}
+
+/* Responsive Design for Suggested Anime */
+@media (max-width: 768px) {
+    .suggested-anime-section {
+        margin-top: 3rem;
+        padding: 2rem 0;
+    }
+    
+    .suggested-anime-section .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .anime-recommendations {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .anime-card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .suggested-anime-section {
+        margin-top: 2rem;
+        padding: 1.5rem 0;
+    }
+    
+    .suggested-anime-section .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .anime-card {
+        padding: 1rem;
+        gap: 0.75rem;
+    }
+    
+    .anime-poster {
+        width: 60px;
+        height: 90px;
+    }
+    
+    .anime-title {
+        font-size: 1rem;
+    }
+    
+    .anime-meta {
+        gap: 0.75rem;
+    }
+    
+    .anime-rating,
+    .anime-episodes {
+        font-size: 0.8rem;
+    }
+    
+    .genre-tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.4rem;
+    }
+}
+
+@media (max-width: 412px) {
+    .suggested-anime-section {
+        margin-top: 1.5rem;
+        padding: 1rem 0;
+    }
+    
+    .suggested-anime-section .section-title {
+        font-size: 1.25rem;
+    }
+    
+    .suggested-anime-section .section-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .anime-card {
+        padding: 0.75rem;
+    }
+    
+    .anime-poster {
+        width: 50px;
+        height: 75px;
+    }
+    
+    .anime-title {
+        font-size: 0.9rem;
+    }
+}/* FOR
+CE CRUNCHYROLL TEXT VISIBILITY - EMERGENCY OVERRIDE */
+.anime-platform {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.2 !important;
+}
+
+/* Light mode - Force #133978 color */
+html:not([data-theme="dark"]) .anime-platform,
+[data-theme="light"] .anime-platform {
+    color: #133978 !important;
+}
+
+/* Dark mode - Force white color */
+[data-theme="dark"] .anime-platform {
+    color: #ffffff !important;
+}
+
+/* Default fallback - light mode color */
+.anime-platform {
+    color: #133978 !important;
+}
+
+/* Ultra specific selector to override any conflicting styles */
+.suggested-anime-section .anime-card .anime-info .anime-platform {
+    color: #133978 !important;
+    display: block !important;
+    font-weight: 500 !important;
+}
+
+[data-theme="dark"] .suggested-anime-section .anime-card .anime-info .anime-platform {
+    color: #ffffff !important;
+}
+
+/* Individual Creator Content Sections */
+.creator-content-section {
+    margin-top: 4rem;
+    margin-bottom: 3rem;
+    padding: 2.5rem 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px var(--shadow-light);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.creator-content-section:hover {
+    box-shadow: 0 6px 20px var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+.content-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent-primary);
+    display: block;
+    position: relative;
+    width: 100%;
+    clear: both;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.content-section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 40px;
+    height: 3px;
+    background: var(--accent-secondary);
+    border-radius: 2px;
+}
+
+/* Anime Grid for Individual Sections */
+.creator-content-section .anime-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.creator-content-section .anime-card-box {
+    display: flex;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.creator-content-section .anime-card-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    border-color: var(--accent-primary);
+}
+
+.creator-content-section .anime-image-left {
+    flex-shrink: 0;
+    width: 60px;
+    height: 90px;
+    overflow: hidden;
+}
+
+.creator-content-section .anime-image-left .anime-poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.creator-content-section .anime-card-box:hover .anime-poster {
+    transform: scale(1.05);
+}
+
+.creator-content-section .anime-details-right {
+    flex: 1;
+    padding: 0.6rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.creator-content-section .anime-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.2rem;
+    line-height: 1.3;
+}
+
+.creator-content-section .anime-platform {
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+}
+
+/* Gold color for both light and dark modes */
+.creator-content-section .anime-platform,
+[data-theme="light"] .creator-content-section .anime-platform,
+[data-theme="dark"] .creator-content-section .anime-platform,
+html:not([data-theme="dark"]) .creator-content-section .anime-platform {
+    color: #fbbf24 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Ultra specific gold color override */
+[data-theme="light"] .creator-content-section .anime-card-box .anime-details-right .anime-platform,
+[data-theme="dark"] .creator-content-section .anime-card-box .anime-details-right .anime-platform {
+    color: #fbbf24 !important;
+}
+
+.creator-content-section .anime-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    align-items: center;
+    font-size: 0.65rem;
+}
+
+.creator-content-section .anime-rating-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    color: #000000;
+    font-weight: 600;
+    padding: 0.2rem 0.4rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.3);
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    font-size: 0.65rem;
+    transition: all 0.3s ease;
+}
+
+.creator-content-section .anime-rating-box:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.4);
+}
+
+.creator-content-section .anime-rating-box i {
+    color: #000000;
+    font-size: 0.65rem;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.creator-content-section .anime-episodes {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.creator-content-section .anime-genre-tag {
+    background: var(--accent-primary);
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 10px;
+    font-size: 0.55rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Videos Grid for Individual Sections */
+.creator-content-section .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.creator-content-section .video-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.creator-content-section .video-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--shadow-medium);
+    border-color: var(--accent-primary);
+}
+
+.creator-content-section .video-thumbnail {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    height: 120px;
+    overflow: hidden;
+    background: #000;
+}
+
+.creator-content-section .video-thumbnail iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.creator-content-section .video-duration {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.creator-content-section .video-info {
+    flex: 1;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.creator-content-section .video-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.creator-content-section .video-channel {
+    font-size: 0.75rem;
+    color: #133978 !important;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+}
+
+/* Light mode - #133978 color */
+[data-theme="light"] .creator-content-section .video-channel,
+html:not([data-theme="dark"]) .creator-content-section .video-channel {
+    color: #133978 !important;
+}
+
+/* Dark mode - White color */
+[data-theme="dark"] .creator-content-section .video-channel {
+    color: #ffffff !important;
+}
+
+.creator-content-section .video-views {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive Design for Individual Sections */
+
+/* Mobile: 1 video per row (default above) */
+
+/* Tablet and up: 2 videos per row */
+@media (min-width: 768px) {
+    .creator-content-section .anime-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .creator-content-section .videos-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .creator-content-section .anime-image-left {
+        width: 100px;
+        height: 140px;
+    }
+    
+    .creator-content-section .video-thumbnail {
+        width: 140px;
+        height: 90px;
+    }
+}
+
+/* Large screens: 3 videos per row */
+@media (min-width: 1200px) {
+    .creator-content-section .videos-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+    
+    .creator-content-section .video-card {
+        flex-direction: column;
+    }
+    
+    .creator-content-section .video-thumbnail {
+        width: 100%;
+        height: 180px;
+    }
+    
+    .creator-content-section .video-info {
+        padding: 1.2rem;
+    }
+    
+    .creator-content-section .video-title {
+        font-size: 1rem;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .creator-content-section {
+        padding: 2rem;
+    }
+    
+    .content-section-title {
+        font-size: 1.5rem;
+    }
+    
+    .creator-content-section .anime-name {
+        font-size: 1.125rem;
+    }
+    
+    .creator-content-section .video-title {
+        font-size: 1rem;
+    }
+}
+
+/* 412px Mobile Responsive - Make much smaller */
+@media (max-width: 412px) {
+    .creator-content-section {
+        margin-top: 2rem;
+        margin-bottom: 1.5rem;
+        padding: 1rem 0.6rem;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px var(--shadow-light);
+    }
+    
+    .creator-content-section:hover {
+        box-shadow: 0 3px 12px var(--shadow-medium);
+        transform: none;
+    }
+    
+    .content-section-title {
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+        margin-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+    
+    .content-section-title::before {
+        width: 25px;
+        height: 2px;
+    }
+    
+    .creator-content-section .anime-image-left {
+        width: 50px;
+        height: 75px;
+    }
+    
+    .creator-content-section .anime-details-right {
+        padding: 0.5rem;
+    }
+    
+    .creator-content-section .anime-name {
+        font-size: 0.7rem;
+        margin-bottom: 0.1rem;
+    }
+    
+    .creator-content-section .anime-platform {
+        font-size: 0.6rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .creator-content-section .anime-meta {
+        gap: 0.3rem;
+        font-size: 0.5rem;
+    }
+    
+    .creator-content-section .anime-rating-box {
+        padding: 0.15rem 0.3rem;
+        font-size: 0.5rem;
+        border-radius: 4px;
+        gap: 0.15rem;
+        box-shadow: 0 1px 3px rgba(251, 191, 36, 0.3);
+    }
+    
+    .creator-content-section .anime-rating-box:hover {
+        transform: none;
+        box-shadow: 0 1px 4px rgba(251, 191, 36, 0.4);
+    }
+    
+    .creator-content-section .anime-rating-box i {
+        font-size: 0.5rem;
+    }
+    
+    .creator-content-section .anime-genre-tag {
+        padding: 0.1rem 0.3rem;
+        font-size: 0.45rem;
+    }
+    
+    .creator-content-section .video-thumbnail {
+        width: 80px;
+        height: 55px;
+    }
+    
+    .creator-content-section .video-info {
+        padding: 0.5rem;
+    }
+    
+    .creator-content-section .video-title {
+        font-size: 0.6rem;
+        margin-bottom: 0.1rem;
+    }
+    
+    .creator-content-section .video-channel,
+    .creator-content-section .video-views {
+        font-size: 0.5rem;
+    }
+    
+    .creator-content-section .video-duration {
+        font-size: 0.5rem;
+        padding: 1px 3px;
+    }
+}

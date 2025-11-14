@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - TADB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="contact-us-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="voice-artists-real.html" class="nav-link">
+                    <i class="fas fa-microphone nav-icon"></i>
+                    <span>Voice Artists</span>
+                </a>
+                <a href="anime-schedule.html" class="nav-link">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="about-us.html" class="nav-link">
+                    <i class="fas fa-info-circle nav-icon"></i>
+                    <span>About</span>
+                </a>
+                <a href="contact-us.html" class="nav-link active">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <button class="search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home mobile-nav-icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="voice-artists-real.html" class="mobile-nav-link">
+                <i class="fas fa-microphone mobile-nav-icon"></i>
+                <span>Voice Artists</span>
+            </a>
+            <a href="anime-schedule.html" class="mobile-nav-link">
+                <i class="fas fa-calendar mobile-nav-icon"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="about-us.html" class="mobile-nav-link">
+                <i class="fas fa-info-circle mobile-nav-icon"></i>
+                <span>About</span>
+            </a>
+            <a href="contact-us.html" class="mobile-nav-link active">
+                <i class="fas fa-envelope mobile-nav-icon"></i>
+                <span>Contact Us</span>
+            </a>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchBox">
+            <div class="search-container">
+                <input type="text" placeholder="Search..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-pattern"></div>
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-envelope"></i>
+                    <span>Get In Touch</span>
+                </div>
+                <h1 class="hero-title">
+                    Contact
+                    <span class="hero-highlight">TADB</span>
+                </h1>
+                <p class="hero-description">
+                    Have questions about Telugu anime? Want to suggest new content or report issues? 
+                    We'd love to hear from you! Reach out through any of the channels below.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="contact-container">
+            <div class="contact-grid">
+                <!-- Contact Cards -->
+                <div class="contact-card email-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Email Us</h3>
+                        <p>Send us your questions, suggestions, or feedback</p>
+                        <a href="mailto:sivadoraemon33@gmail.com" class="contact-link">
+                            sivadoraemon33@gmail.com
+                        </a>
+                    </div>
+                </div>
+
+                <div class="contact-card instagram-card">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Follow Us</h3>
+                        <p>Stay updated with latest anime news and updates</p>
+                        <a href="https://instagram.com/sivadoraemon33" target="_blank" class="contact-link">
+                            @sivadoraemon33
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="contact-form-section">
+                <div class="form-header">
+                    <h2>Send us a Message</h2>
+                    <p>Fill out the form below and we'll get back to you as soon as possible</p>
+                </div>
+                
+                <form class="contact-form" id="contactForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Your Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <select id="subject" name="subject" required>
+                            <option value="">Select a topic</option>
+                            <option value="general">General Inquiry</option>
+                            <option value="suggestion">Content Suggestion</option>
+                            <option value="bug">Report a Bug</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Your Message</label>
+                        <textarea id="message" name="message" rows="6" required placeholder="Tell us what's on your mind..."></textarea>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="disclaimer-section">
+            <h4>Disclaimer</h4>
+            <p>This website is for informational purposes only. All anime content, images, and trademarks belong to their respective owners. We do not host or distribute any copyrighted material.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TADB - Telugu Anime Database. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="theme-manager.js"></script>
+    <script src="contact-us-script.js"></script>
+</body>
+
+</html>

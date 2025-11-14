@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creators Editor - TADB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .editor-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+        
+        .editor-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .editor-header h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .creators-list {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .creator-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .creator-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        
+        .creator-item-info {
+            flex: 1;
+        }
+        
+        .creator-item-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .creator-item-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="creators-editor.html" class="nav-link active">
+                    <i class="fas fa-users nav-icon"></i>
+                    <span>Creators Editor</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="editor-container">
+        <div class="editor-header">
+            <h1><i class="fas fa-users"></i> Content Creators Editor</h1>
+            <p>Manage voice artists, directors, writers, and production team</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> Creator saved successfully!
+        </div>
+
+        <form id="creatorForm">
+            <input type="hidden" id="creatorId" name="id">
+            
+            <div class="form-group">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="role">Role *</label>
+                    <select id="role" name="role" required>
+                        <option value="Database Creator">Database Creator</option>
+                        <option value="YouTube Channel">YouTube Channel</option>
+                        <option value="Digital Artist">Digital Artist</option>
+                        <option value="Graphic Designer">Graphic Designer</option>
+                        <option value="Design Studio">Design Studio</option>
+                        <option value="Voice Artist">Voice Artist</option>
+                        <option value="Script Writer">Script Writer</option>
+                        <option value="Director">Director</option>
+                        <option value="Sound Engineer">Sound Engineer</option>
+                        <option value="Producer">Producer</option>
+                        <option value="Editor">Editor</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="dataCreator">Data Creator ID *</label>
+                    <input type="text" id="dataCreator" name="dataCreator" placeholder="tadb, telchi, professor, rae, mrp" required>
+                    <small style="color: var(--text-muted);">Used for page navigation (lowercase, no spaces)</small>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="avatar">Avatar/Photo URL *</label>
+                <input type="url" id="avatar" name="avatar" required>
+            </div>
+
+            <div class="form-group">
+                <label for="bio">Bio/Description</label>
+                <textarea id="bio" name="bio" placeholder="Short bio about the creator"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="badge">Badge Text</label>
+                <input type="text" id="badge" name="badge" placeholder="Founder, Channel, Artist, Designer, Studio">
+                <small style="color: var(--text-muted);">Badge shown on profile card</small>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-chart-bar"></i> Statistics
+            </h3>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="stat1Number">Stat 1 Number</label>
+                    <input type="text" id="stat1Number" name="stat1Number" placeholder="50+">
+                </div>
+                <div class="form-group">
+                    <label for="stat1Label">Stat 1 Label</label>
+                    <input type="text" id="stat1Label" name="stat1Label" placeholder="Posts">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="stat2Number">Stat 2 Number</label>
+                    <input type="text" id="stat2Number" name="stat2Number" placeholder="10K+">
+                </div>
+                <div class="form-group">
+                    <label for="stat2Label">Stat 2 Label</label>
+                    <input type="text" id="stat2Label" name="stat2Label" placeholder="Followers">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="stat3Number">Stat 3 Number</label>
+                    <input type="text" id="stat3Number" name="stat3Number" placeholder="2024">
+                </div>
+                <div class="form-group">
+                    <label for="stat3Label">Stat 3 Label</label>
+                    <input type="text" id="stat3Label" name="stat3Label" placeholder="Founded">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="instagram">Instagram URL</label>
+                    <input type="url" id="instagram" name="instagram" placeholder="https://instagram.com/username">
+                </div>
+                
+                <div class="form-group">
+                    <label for="youtube">YouTube URL</label>
+                    <input type="url" id="youtube" name="youtube" placeholder="https://youtube.com/@username">
+                </div>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-tv"></i> Suggested Animes (Optional)
+            </h3>
+
+            <div class="form-group">
+                <label for="suggestedAnimes">Suggested Animes (JSON Format)</label>
+                <textarea id="suggestedAnimes" name="suggestedAnimes" placeholder='[{"title":"Anime Name","platform":"Platform","rating":"8.5","episodes":"12","poster":"URL"}]'></textarea>
+                <small style="color: var(--text-muted);">Add anime suggestions as JSON array. Leave empty if none.</small>
+            </div>
+
+            <hr style="margin: 30px 0; border: 1px solid var(--border-color);">
+            <h3 style="color: var(--text-primary); margin-bottom: 20px;">
+                <i class="fas fa-video"></i> Latest Videos (Optional)
+            </h3>
+
+            <div class="form-group">
+                <label for="latestVideos">Latest Videos (JSON Format)</label>
+                <textarea id="latestVideos" name="latestVideos" placeholder='[{"title":"Video Title","channel":"Channel Name","views":"1.2K views","time":"2 days ago","thumbnail":"URL","videoId":"YouTube_ID"}]'></textarea>
+                <small style="color: var(--text-muted);">Add latest videos as JSON array. Use YouTube video ID only.</small>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Creator
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+
+        <div class="creators-list">
+            <h2>All Creators</h2>
+            <div id="creatorsList"></div>
+        </div>
+    </div>
+
+    <script src="data-backup.js"></script>
+    <script src="creators-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script>
+        function loadCreatorsList() {
+            const creatorsList = document.getElementById('creatorsList');
+            const creators = window.creatorsManager.getAllCreators();
+            
+            if (creators.length === 0) {
+                creatorsList.innerHTML = '<p style="color: var(--text-muted);">No creators yet.</p>';
+                return;
+            }
+            
+            creatorsList.innerHTML = creators.map(creator => `
+                <div class="creator-item">
+                    <img src="${creator.avatar}" alt="${creator.name}">
+                    <div class="creator-item-info">
+                        <h3>${creator.name}</h3>
+                        <p>${creator.role}${creator.bio ? ' • ' + creator.bio : ''}</p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-secondary btn-small" onclick="editCreator(${creator.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="deleteCreator(${creator.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editCreator(id) {
+            const creator = window.creatorsManager.getCreatorById(id);
+            if (!creator) return;
+            
+            document.getElementById('creatorId').value = creator.id;
+            document.getElementById('name').value = creator.name;
+            document.getElementById('role').value = creator.role;
+            document.getElementById('dataCreator').value = creator.dataCreator || '';
+            document.getElementById('avatar').value = creator.avatar;
+            document.getElementById('bio').value = creator.bio || '';
+            document.getElementById('badge').value = creator.badge || '';
+            
+            // Stats
+            document.getElementById('stat1Number').value = creator.stats?.stat1?.number || '';
+            document.getElementById('stat1Label').value = creator.stats?.stat1?.label || '';
+            document.getElementById('stat2Number').value = creator.stats?.stat2?.number || '';
+            document.getElementById('stat2Label').value = creator.stats?.stat2?.label || '';
+            document.getElementById('stat3Number').value = creator.stats?.stat3?.number || '';
+            document.getElementById('stat3Label').value = creator.stats?.stat3?.label || '';
+            
+            // Social
+            document.getElementById('instagram').value = creator.social?.instagram || '';
+            document.getElementById('youtube').value = creator.social?.youtube || '';
+            
+            // Suggested Animes and Videos
+            document.getElementById('suggestedAnimes').value = creator.suggestedAnimes ? JSON.stringify(creator.suggestedAnimes, null, 2) : '';
+            document.getElementById('latestVideos').value = creator.latestVideos ? JSON.stringify(creator.latestVideos, null, 2) : '';
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteCreator(id) {
+            if (confirm('Delete this creator?')) {
+                window.creatorsManager.deleteCreator(id);
+                loadCreatorsList();
+                showSuccessMessage('Creator deleted!');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('creatorForm').reset();
+            document.getElementById('creatorId').value = '';
+        }
+
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+        }
+
+        document.getElementById('creatorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            // Parse JSON fields
+            let suggestedAnimes = [];
+            let latestVideos = [];
+            
+            try {
+                const animesData = formData.get('suggestedAnimes').trim();
+                if (animesData) suggestedAnimes = JSON.parse(animesData);
+            } catch (e) {
+                console.error('Invalid suggested animes JSON:', e);
+                alert('Invalid JSON format for Suggested Animes. Please check the format.');
+                return;
+            }
+            
+            try {
+                const videosData = formData.get('latestVideos').trim();
+                if (videosData) latestVideos = JSON.parse(videosData);
+            } catch (e) {
+                console.error('Invalid latest videos JSON:', e);
+                alert('Invalid JSON format for Latest Videos. Please check the format.');
+                return;
+            }
+            
+            const creatorData = {
+                id: formData.get('id') ? parseInt(formData.get('id')) : undefined,
+                name: formData.get('name'),
+                role: formData.get('role'),
+                dataCreator: formData.get('dataCreator'),
+                avatar: formData.get('avatar'),
+                bio: formData.get('bio'),
+                badge: formData.get('badge'),
+                stats: {
+                    stat1: {
+                        number: formData.get('stat1Number'),
+                        label: formData.get('stat1Label')
+                    },
+                    stat2: {
+                        number: formData.get('stat2Number'),
+                        label: formData.get('stat2Label')
+                    },
+                    stat3: {
+                        number: formData.get('stat3Number'),
+                        label: formData.get('stat3Label')
+                    }
+                },
+                social: {
+                    instagram: formData.get('instagram'),
+                    youtube: formData.get('youtube')
+                },
+                suggestedAnimes: suggestedAnimes,
+                latestVideos: latestVideos
+            };
+            
+            window.creatorsManager.saveCreator(creatorData);
+            showSuccessMessage(creatorData.id ? 'Creator updated!' : 'Creator created!');
+            resetForm();
+            loadCreatorsList();
+        });
+
+        loadCreatorsList();
+    </script>
+
+    <!-- Password Protection -->
+    <div id="passwordModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(10px);">
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: modalFadeIn 0.3s ease;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 25px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.8rem;">Creators Editor Access</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Enter password to access creators editor</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 15px; border: 2px solid var(--border-color); border-radius: 10px; background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; margin-bottom: 10px; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()"/>
+            <div id="errorMessage" style="color: #e74c3c; margin-bottom: 20px; font-size: 0.9rem; min-height: 20px; display: none;"><i class="fas fa-exclamation-circle"></i> Incorrect password!</div>
+            <button onclick="checkPassword()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fas fa-unlock"></i> Unlock Editor</button>
+            <a href="index.html" style="display: block; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+        </div>
+    </div>
+
+    <style>
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
+        #passwordInput:focus { outline: none; border-color: #4facfe; box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1); }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
+    </style>
+
+    <script src="auth-hash.js"></script>
+    <script>
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const modal = document.getElementById('passwordModal');
+            const isValid = await window.AuthHash.verifyPassword(input.value);
+            if (isValid) {
+                window.AuthHash.setSession();
+                modal.style.animation = 'modalFadeOut 0.3s ease';
+                setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
+            } else {
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = '#e74c3c';
+                const modalContent = modal.querySelector('div > div');
+                modalContent.classList.add('shake');
+                setTimeout(() => { modalContent.classList.remove('shake'); input.style.borderColor = 'var(--border-color)'; }, 500);
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.AuthHash.isSessionValid()) {
+                document.getElementById('passwordModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                document.body.style.overflow = 'hidden';
+                document.getElementById('passwordInput').focus();
+            }
+        });
+        function logout() { window.AuthHash.logout(); }
+    </script>
+</body>
+</html>

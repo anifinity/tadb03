@@ -1,0 +1,365 @@
+/* IMDb Ratings Page - Ranking Style */
+
+.ratings-container {
+    max-width: 800px;
+    margin: 100px auto 50px;
+    padding: 20px;
+}
+
+/* Header */
+.ratings-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px 20px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 2px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.ratings-header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-primary);
+}
+
+.imdb-badge {
+    background: #f5c518;
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 1.8rem;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Ratings List */
+.ratings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Ranking Item */
+.ranking-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    background-size: cover;
+    background-position: center 30%;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 2px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+    min-height: 100px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* Smart positioning for different screen sizes */
+@media (max-width: 768px) {
+    .ranking-item {
+        background-position: center 35%;
+    }
+}
+
+.ranking-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+    border-radius: 13px;
+    z-index: 0;
+}
+
+.ranking-item:hover {
+    border-color: var(--accent-primary);
+    transform: translateX(10px);
+    box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+/* Rank Number */
+.rank-number {
+    background: #fff;
+    color: #000;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    font-weight: 900;
+    border-radius: 12px;
+    margin: 10px;
+    flex-shrink: 0;
+    border: 3px solid var(--accent-primary);
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Anime Title */
+.anime-title-section {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.anime-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* IMDb Rating Box */
+.imdb-rating-box {
+    background: var(--card-bg);
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 15px;
+    border: 3px solid #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.rating-text {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.imdb-logo {
+    background: #f5c518;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 900;
+    font-size: 0.8rem;
+    margin-top: 5px;
+}
+
+/* Footer */
+.footer-text {
+    text-align: center;
+    margin-top: 60px;
+    padding: 40px 20px;
+    border-top: 2px solid var(--border-color);
+}
+
+.footer-text h2 {
+    color: #f5c518;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.footer-text p {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Light Mode */
+:root[data-theme="light"] .anime-title {
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.9);
+}
+
+:root[data-theme="light"] .rank-number {
+    background: #133978;
+    color: #fff;
+    border-color: #f37021;
+}
+
+:root[data-theme="light"] .imdb-rating-box {
+    border-color: #133978;
+}
+
+:root[data-theme="light"] .rating-text {
+    color: #133978;
+}
+
+:root[data-theme="light"] .footer-text h2 {
+    color: #133978;
+}
+
+:root[data-theme="light"] .footer-text p {
+    color: #133978;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ratings-container {
+        margin-top: 80px;
+        padding: 15px;
+    }
+    
+    .ratings-header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .imdb-badge {
+        font-size: 1.3rem;
+    }
+    
+    .rank-number {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+    
+    .anime-title {
+        font-size: 1rem;
+    }
+    
+    .rating-text {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ratings-header h1 {
+        font-size: 0.9rem;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: 5px;
+    }
+    
+    .imdb-badge {
+        font-size: 1.1rem;
+    }
+    
+    .rank-number {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+    
+    .anime-title {
+        font-size: 0.75rem;
+    }
+    
+    .rating-text {
+        font-size: 1.1rem;
+    }
+    
+    .imdb-rating-box {
+        min-width: 65px;
+        padding: 5px 8px;
+    }
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 0;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    background: var(--card-bg);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-btn:hover {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.page-btn.active {
+    background: var(--accent-primary);
+    color: #fff;
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.page-dots {
+    color: var(--text-muted);
+    font-weight: 700;
+    padding: 0 5px;
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+    .pagination {
+        gap: 8px;
+        padding: 15px;
+    }
+    
+    .page-btn {
+        padding: 10px 14px;
+        font-size: 0.9rem;
+        min-width: 40px;
+    }
+}
+
+@media (max-width: 480px) {
+    .pagination {
+        gap: 5px;
+        padding: 10px;
+    }
+    
+    .page-btn {
+        padding: 8px 12px;
+        font-size: 0.85rem;
+        min-width: 35px;
+    }
+}

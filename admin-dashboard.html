@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TADB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .dashboard-content {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .dashboard-header {
+            margin-bottom: 60px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .dashboard-header h1 {
+            font-size: 3rem;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .dashboard-header p {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .editors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .editor-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px 30px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .editor-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .editor-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .editor-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .editor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .editor-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent-color);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .editor-card:hover::before {
+            opacity: 1;
+        }
+
+        .editor-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editor-card:hover .editor-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .editor-card.posts .editor-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .editor-card.schedule .editor-icon {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .editor-card.creators .editor-icon {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .editor-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editor-description {
+            font-size: 1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editor-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 5px;
+        }
+
+        .editor-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editor-card.posts .editor-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .editor-card.schedule .editor-button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .editor-card.creators .editor-button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .editor-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .quick-links {
+            margin-top: 50px;
+            padding: 30px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            animation: fadeIn 0.6s ease 0.4s both;
+        }
+
+        .quick-links h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .quick-link {
+            padding: 12px 20px;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quick-link:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header h1 {
+                font-size: 2rem;
+            }
+
+            .dashboard-header p {
+                font-size: 1rem;
+            }
+
+            .editors-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .editor-card {
+                padding: 30px 20px;
+            }
+
+            .editor-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .editor-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="admin-dashboard.html" class="nav-link active">
+                    <i class="fas fa-cog nav-icon"></i>
+                    <span>Admin</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <div class="dashboard-content">
+            <!-- Header -->
+            <div class="dashboard-header">
+                <h1><i class="fas fa-shield-alt"></i> Admin Dashboard</h1>
+                <p>Manage your entire website content from one place. Choose an editor to get started.</p>
+            </div>
+
+            <!-- Editors Grid -->
+            <div class="editors-grid">
+                <!-- Post Editor Card -->
+                <div class="editor-card posts" onclick="window.location.href='post-editor.html'">
+                    <div class="editor-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h2 class="editor-title">Post Editor</h2>
+                    <p class="editor-description">
+                        Manage anime posts, movies, and series. Add cast, crew, trailers, and detailed information.
+                    </p>
+                    <div class="editor-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="postsCount">0</span>
+                            <span class="stat-label">Posts</span>
+                        </div>
+                    </div>
+                    <button class="editor-button">
+                        <i class="fas fa-edit"></i>
+                        <span>Open Editor</span>
+                    </button>
+                </div>
+
+                <!-- Schedule Editor Card -->
+                <div class="editor-card schedule" onclick="window.location.href='schedule-editor.html'">
+                    <div class="editor-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h2 class="editor-title">Schedule Editor</h2>
+                    <p class="editor-description">
+                        Manage anime release schedule. Set days, times, platforms, and episode information.
+                    </p>
+                    <div class="editor-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="schedulesCount">0</span>
+                            <span class="stat-label">Schedules</span>
+                        </div>
+                    </div>
+                    <button class="editor-button">
+                        <i class="fas fa-calendar-plus"></i>
+                        <span>Open Editor</span>
+                    </button>
+                </div>
+
+                <!-- Creators Editor Card -->
+                <div class="editor-card creators" onclick="window.location.href='creators-editor.html'">
+                    <div class="editor-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h2 class="editor-title">Creators Editor</h2>
+                    <p class="editor-description">
+                        Manage voice artists, directors, writers, and production team members.
+                    </p>
+                    <div class="editor-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="creatorsCount">0</span>
+                            <span class="stat-label">Creators</span>
+                        </div>
+                    </div>
+                    <button class="editor-button">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Open Editor</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="quick-links">
+                <h3><i class="fas fa-link"></i> Quick Links</h3>
+                <div class="links-grid">
+                    <a href="index.html" class="quick-link">
+                        <i class="fas fa-home"></i>
+                        <span>Homepage</span>
+                    </a>
+                    <a href="anime-schedule.html" class="quick-link">
+                        <i class="fas fa-calendar"></i>
+                        <span>View Schedule</span>
+                    </a>
+                    <a href="voice-artists-real.html" class="quick-link">
+                        <i class="fas fa-microphone"></i>
+                        <span>Voice Artists</span>
+                    </a>
+                    <a href="about-us.html" class="quick-link">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About Us</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Password Protection Modal -->
+    <div id="passwordModal" style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        backdrop-filter: blur(10px);
+    ">
+        <div style="
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease;
+        ">
+            <div style="
+                width: 80px;
+                height: 80px;
+                margin: 0 auto 25px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: white;
+            ">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.8rem;">Admin Access</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Enter password to access dashboard</p>
+            
+            <input 
+                type="password" 
+                id="passwordInput" 
+                placeholder="Enter password"
+                style="
+                    width: 100%;
+                    padding: 15px;
+                    border: 2px solid var(--border-color);
+                    border-radius: 10px;
+                    background: var(--bg-primary);
+                    color: var(--text-primary);
+                    font-size: 1rem;
+                    margin-bottom: 10px;
+                    transition: all 0.3s ease;
+                "
+                onkeypress="if(event.key === 'Enter') checkPassword()"
+            />
+            
+            <div id="errorMessage" style="
+                color: #e74c3c;
+                margin-bottom: 20px;
+                font-size: 0.9rem;
+                min-height: 20px;
+                display: none;
+            ">
+                <i class="fas fa-exclamation-circle"></i> Incorrect password!
+            </div>
+            
+            <button 
+                onclick="checkPassword()"
+                style="
+                    width: 100%;
+                    padding: 15px;
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border: none;
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                "
+                onmouseover="this.style.transform='scale(1.05)'"
+                onmouseout="this.style.transform='scale(1)'"
+            >
+                <i class="fas fa-unlock"></i> Unlock Dashboard
+            </button>
+            
+            <a href="index.html" style="
+                display: block;
+                margin-top: 20px;
+                color: var(--text-muted);
+                text-decoration: none;
+                font-size: 0.9rem;
+            ">
+                <i class="fas fa-arrow-left"></i> Back to Homepage
+            </a>
+        </div>
+    </div>
+
+    <style>
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        #passwordInput:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .shake {
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
+        }
+    </style>
+
+    <!-- Scripts -->
+    <script src="data-backup.js"></script>
+    <script src="posts-manager.js"></script>
+    <script src="schedule-manager.js"></script>
+    <script src="creators-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="auth-hash.js"></script>
+    <script>
+        // Password Protection with Hashing
+        // Password is hashed - not visible in source code!
+        
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const modal = document.getElementById('passwordModal');
+            const password = input.value;
+            
+            // Verify using hashed password
+            const isValid = await window.AuthHash.verifyPassword(password);
+            
+            if (isValid) {
+                // Correct password
+                window.AuthHash.setSession();
+                modal.style.animation = 'modalFadeOut 0.3s ease';
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 300);
+            } else {
+                // Incorrect password
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = '#e74c3c';
+                
+                // Shake animation
+                const modalContent = modal.querySelector('div > div');
+                modalContent.classList.add('shake');
+                setTimeout(() => {
+                    modalContent.classList.remove('shake');
+                    input.style.borderColor = 'var(--border-color)';
+                }, 500);
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorMsg.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Check if already authenticated
+        window.addEventListener('DOMContentLoaded', function() {
+            const isAuthenticated = window.AuthHash.isSessionValid();
+            
+            if (isAuthenticated) {
+                // Already logged in
+                document.getElementById('passwordModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                // Show password modal
+                document.body.style.overflow = 'hidden';
+                document.getElementById('passwordInput').focus();
+            }
+            
+            // Update stats (only if authenticated)
+            if (isAuthenticated === 'authenticated') {
+                // Posts count
+                if (window.postsManager) {
+                    const postsCount = window.postsManager.getAllPosts().length;
+                    document.getElementById('postsCount').textContent = postsCount;
+                }
+
+                // Schedules count
+                if (window.scheduleManager) {
+                    const schedulesCount = window.scheduleManager.getAllSchedules().length;
+                    document.getElementById('schedulesCount').textContent = schedulesCount;
+                }
+
+                // Creators count
+                if (window.creatorsManager) {
+                    const creatorsCount = window.creatorsManager.getAllCreators().length;
+                    document.getElementById('creatorsCount').textContent = creatorsCount;
+                }
+            }
+        });
+        
+        // Logout function
+        function logout() {
+            window.AuthHash.logout();
+        }
+    </script>
+    
+    <style>
+        @keyframes modalFadeOut {
+            from {
+                opacity: 1;
+                transform: scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+        }
+    </style>
+</body>
+</html>

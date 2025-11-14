@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Firebase Connection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .test-box {
+            background: #16213e;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4ecca3;
+        }
+        .success { border-left-color: #4ecca3; }
+        .error { border-left-color: #f44336; }
+        .warning { border-left-color: #ff9800; }
+        button {
+            background: #4ecca3;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45b393;
+        }
+        pre {
+            background: #0f0f0f;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔥 Firebase Connection Test</h1>
+    
+    <div class="test-box" id="status">
+        <h3>Status: Testing...</h3>
+    </div>
+
+    <div>
+        <button onclick="testConnection()">1. Test Connection</button>
+        <button onclick="testWrite()">2. Test Write</button>
+        <button onclick="testRead()">3. Test Read</button>
+        <button onclick="testDelete()">4. Test Delete</button>
+    </div>
+
+    <div class="test-box">
+        <h3>Console Output:</h3>
+        <pre id="output"></pre>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script src='https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js'></script>
+    <script src='https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js'></script>
+
+    <script>
+        const output = document.getElementById('output');
+        const statusBox = document.getElementById('status');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            output.textContent += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+            console.log(message);
+        }
+
+        function setStatus(message, type = 'success') {
+            statusBox.className = `test-box ${type}`;
+            statusBox.innerHTML = `<h3>${message}</h3>`;
+        }
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBq2TuKG735hRq34j8IziOcXWNGgvgl5S8",
+            authDomain: "tadb-attendance.firebaseapp.com",
+            databaseURL: "https://tadb-attendance-default-rtdb.firebaseio.com",
+            projectId: "tadb-attendance",
+            storageBucket: "tadb-attendance.firebasestorage.app",
+            messagingSenderId: "361843077723",
+            appId: "1:361843077723:web:81bc48f358198fdff3057e",
+            measurementId: "G-10HQ2PZ0MR"
+        };
+
+        // Initialize Firebase
+        try {
+            firebase.initializeApp(firebaseConfig);
+            log('✅ Firebase initialized successfully');
+            setStatus('✅ Firebase Initialized', 'success');
+        } catch (error) {
+            log('❌ Firebase initialization failed: ' + error.message);
+            setStatus('❌ Firebase Initialization Failed', 'error');
+        }
+
+        async function testConnection() {
+            try {
+                log('🔍 Testing Firebase connection...');
+                setStatus('⏳ Testing connection...', 'warning');
+                
+                const db = firebase.database();
+                const testRef = db.ref('.info/connected');
+                
+                testRef.on('value', (snapshot) => {
+                    if (snapshot.val() === true) {
+                        log('✅ Connected to Firebase!');
+                        setStatus('✅ Connected to Firebase!', 'success');
+                    } else {
+                        log('❌ Not connected to Firebase');
+                        setStatus('❌ Not Connected', 'error');
+                    }
+                });
+                
+            } catch (error) {
+                log('❌ Connection test failed: ' + error.message);
+                setStatus('❌ Connection Failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testWrite() {
+            try {
+                log('📝 Testing write to Firebase...');
+                setStatus('⏳ Testing write...', 'warning');
+                
+                const db = firebase.database();
+                const testData = {
+                    id: 999,
+                    title: 'Test Post',
+                    year: '2025',
+                    timestamp: Date.now()
+                };
+                
+                await db.ref('test_posts/test').set(testData);
+                log('✅ Write successful!');
+                log('Data written: ' + JSON.stringify(testData, null, 2));
+                setStatus('✅ Write Successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Write failed: ' + error.message);
+                log('Error code: ' + error.code);
+                setStatus('❌ Write Failed: ' + error.message, 'error');
+                
+                if (error.code === 'PERMISSION_DENIED') {
+                    log('⚠️ PERMISSION DENIED - Database rules need to be updated!');
+                    log('Go to Firebase Console → Realtime Database → Rules');
+                    log('Set rules to allow write access');
+                }
+            }
+        }
+
+        async function testRead() {
+            try {
+                log('📖 Testing read from Firebase...');
+                setStatus('⏳ Testing read...', 'warning');
+                
+                const db = firebase.database();
+                const snapshot = await db.ref('test_posts/test').once('value');
+                
+                if (snapshot.exists()) {
+                    const data = snapshot.val();
+                    log('✅ Read successful!');
+                    log('Data read: ' + JSON.stringify(data, null, 2));
+                    setStatus('✅ Read Successful!', 'success');
+                } else {
+                    log('⚠️ No data found (write test data first)');
+                    setStatus('⚠️ No Data Found', 'warning');
+                }
+                
+            } catch (error) {
+                log('❌ Read failed: ' + error.message);
+                setStatus('❌ Read Failed: ' + error.message, 'error');
+            }
+        }
+
+        async function testDelete() {
+            try {
+                log('🗑️ Testing delete from Firebase...');
+                setStatus('⏳ Testing delete...', 'warning');
+                
+                const db = firebase.database();
+                await db.ref('test_posts/test').remove();
+                
+                log('✅ Delete successful!');
+                setStatus('✅ Delete Successful!', 'success');
+                
+            } catch (error) {
+                log('❌ Delete failed: ' + error.message);
+                setStatus('❌ Delete Failed: ' + error.message, 'error');
+            }
+        }
+
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            log('🚀 Page loaded, ready to test');
+            log('Click buttons above to test Firebase operations');
+            log('');
+            log('Firebase Config:');
+            log('- Project: ' + firebaseConfig.projectId);
+            log('- Database: ' + firebaseConfig.databaseURL);
+            log('');
+            
+            // Auto-test connection
+            setTimeout(testConnection, 1000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Schedule - TADB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="anime-schedule-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="voice-artists-real.html" class="nav-link">
+                    <i class="fas fa-microphone nav-icon"></i>
+                    <span>Voice Artists</span>
+                </a>
+                <a href="anime-schedule.html" class="nav-link active">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="about-us.html" class="nav-link">
+                    <i class="fas fa-info-circle nav-icon"></i>
+                    <span>About</span>
+                </a>
+                <a href="contact-us.html" class="nav-link">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <button class="search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home mobile-nav-icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="voice-artists-real.html" class="mobile-nav-link">
+                <i class="fas fa-microphone mobile-nav-icon"></i>
+                <span>Voice Artists</span>
+            </a>
+            <a href="anime-schedule.html" class="mobile-nav-link active">
+                <i class="fas fa-calendar mobile-nav-icon"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="about-us.html" class="mobile-nav-link">
+                <i class="fas fa-info-circle mobile-nav-icon"></i>
+                <span>About</span>
+            </a>
+            <a href="contact-us.html" class="mobile-nav-link">
+                <i class="fas fa-envelope mobile-nav-icon"></i>
+                <span>Contact Us</span>
+            </a>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchBox">
+            <div class="search-container">
+                <input type="text" placeholder="Search anime..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-pattern"></div>
+            <div class="hero-gradient"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Anime Schedule Hub</span>
+                </div>
+                <h1 class="hero-title">
+                    Never Miss Your
+                    <span class="hero-highlight">Favorite Anime</span>
+                </h1>
+                <p class="hero-description">
+                    Stay updated with the latest anime release schedules, upcoming episodes, and streaming times. 
+                    Get notifications for your favorite Telugu dubbed anime series and movies.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="upcomingCount">6</span>
+                        <span class="stat-label">Upcoming Anime</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="weeklyCount">5</span>
+                        <span class="stat-label">Weekly Episodes</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="dailyCount">5</span>
+                        <span class="stat-label">Daily Shows</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <button class="cta-primary" onclick="scrollToSection('upcoming-container')">
+                        <i class="fas fa-calendar-check"></i>
+                        View Schedule
+                    </button>
+                    <button class="cta-secondary" onclick="scrollToSection('weekly-container')">
+                        <i class="fas fa-tv"></i>
+                        Weekly Episodes
+                    </button>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="anime-dashboard">
+                    <!-- Anime TV Screen -->
+                    <div class="tv-container">
+                        <div class="tv-frame">
+                            <div class="tv-screen">
+                                <div class="screen-static"></div>
+                                <div class="screen-content">
+                                    <div class="channel-info">
+                                        <div class="channel-logo">📺</div>
+                                        <div class="channel-text">ANIME TV</div>
+                                    </div>
+                                    <div class="now-playing">
+                                        <div class="playing-label">NOW PLAYING</div>
+                                        <div class="playing-title">Dragon Ball Super</div>
+                                        <div class="playing-time">18:00 - SonyYAY</div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="screen-scanlines"></div>
+                            </div>
+                            <div class="tv-controls">
+                                <div class="control-button power"></div>
+                                <div class="control-button volume"></div>
+                                <div class="control-button channel"></div>
+                            </div>
+                        </div>
+                        <div class="tv-stand"></div>
+                    </div>
+
+                    <!-- Anime Decorations -->
+                    <div class="anime-decorations">
+                        <div class="decoration-stars">
+                            <div class="star star-1">⭐</div>
+                            <div class="star star-2">✨</div>
+                            <div class="star star-3">🌟</div>
+                        </div>
+                        
+                        <div class="decoration-icons">
+                            <div class="deco-icon icon-1">🎌</div>
+                            <div class="deco-icon icon-2">🗾</div>
+                            <div class="deco-icon icon-3">🎭</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ANIME SCHEDULE SECTIONS -->
+    <div class="schedule-wrapper" data-theme="default">
+        <div class="schedule-container">
+            <!-- Tab Navigation -->
+            <div class="tab-navigation">
+                <button class="tab-btn active" data-tab="upcoming">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Upcoming</span>
+                    <div class="tab-count" id="upcomingTabCount">6</div>
+                </button>
+                <button class="tab-btn" data-tab="weekly">
+                    <i class="fas fa-tv"></i>
+                    <span>Weekly</span>
+                    <div class="tab-count" id="weeklyTabCount">5</div>
+                </button>
+                <button class="tab-btn" data-tab="tv">
+                    <i class="fas fa-broadcast-tower"></i>
+                    <span>TV Schedule</span>
+                    <div class="tab-count" id="tvTabCount">5</div>
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Upcoming Tab -->
+                <div class="tab-panel active" id="upcoming-tab">
+                    <div class="section-header">
+                        <h2 class="section-title">Upcoming Anime Schedule</h2>
+                        <p class="section-subtitle">New releases and upcoming episodes</p>
+                    </div>
+                    <div id="upcoming-container"></div>
+                </div>
+
+                <!-- Weekly Tab -->
+                <div class="tab-panel" id="weekly-tab">
+                    <div class="section-header">
+                        <h2 class="section-title">Weekly Episodes</h2>
+                        <p class="section-subtitle">Regular weekly anime episodes</p>
+                    </div>
+                    <div id="weekly-container"></div>
+                </div>
+
+                <!-- TV Schedule Tab -->
+                <div class="tab-panel" id="tv-tab">
+                    <div class="section-header">
+                        <h2 class="section-title">TV Schedule</h2>
+                        <p class="section-subtitle">Daily TV broadcast schedule</p>
+                    </div>
+                    <div id="tv-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="disclaimer-section">
+            <h4>Disclaimer</h4>
+            <p>This website is for informational purposes only. All anime content, images, and trademarks belong to their respective owners. We do not host or distribute any copyrighted material.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TADB - Telugu Anime Database. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="schedule-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="anime-schedule-script.js"></script>
+</body>
+
+</html>

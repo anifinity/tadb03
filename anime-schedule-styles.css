@@ -1,0 +1,1911 @@
+/* Import base styles from main styles.css */
+@import url('styles.css');
+
+/* Ensure consistent Inter font across all elements */
+body, h1, h2, h3, h4, h5, h6, p, span, div, a, button, input {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Theme Variables for Schedule */
+/* Light mode (default) */
+:root {
+    --background-color: #F5F7FA;
+    --text-color: #0B0B0B;
+    --text-color-subtle: #444B5A;
+    --card-background: #FFFFFF;
+    --card-border: #133978;
+    --card-hover-background: #F5F7FA;
+    --primary-color: #133978;
+    --heading-color: #133978;
+    --heading-border: #133978;
+    --title-color: #133978;
+    --release-time-color: #000000;
+    --countdown-color: #133978;
+    --next-episode-color: #000000;
+}
+
+/* Dark mode */
+[data-theme="dark"] {
+    --background-color: #111;
+    --text-color: #fff;
+    --text-color-subtle: #ccc;
+    --card-background: rgba(19, 57, 120, 0.1);
+    --card-border: rgba(19, 57, 120, 0.3);
+    --card-hover-background: rgba(19, 57, 120, 0.2);
+    --primary-color: #133978;
+    --heading-color: #fff;
+    --heading-border: #133978;
+    --title-color: #fff;
+    --release-time-color: #ccc;
+    --countdown-color: #f7ef47;
+    --next-episode-color: #fff;
+}
+
+/* Schedule Wrapper */
+.schedule-wrapper {
+    background: var(--background-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.schedule-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+    display: flex;
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    padding: 8px;
+    margin: 0 auto 40px auto;
+    gap: 8px;
+    width: 520px;
+    justify-content: center;
+}
+
+.tab-btn {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    gap: 8px;
+    padding: 15px 20px;
+    background: transparent;
+    border: none;
+    color: var(--text-color-subtle);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.tab-btn:hover {
+    background: var(--card-hover-background);
+    color: var(--text-color);
+}
+
+.tab-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(19, 57, 120, 0.3);
+}
+
+.tab-btn i {
+    font-size: 1.1rem;
+}
+
+.tab-count {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.tab-btn:not(.active) .tab-count {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Tab Content */
+.tab-content {
+    position: relative;
+}
+
+.tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section Headers */
+.section-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin: 0 0 8px 0;
+}
+
+.section-subtitle {
+    font-size: 1rem;
+    color: var(--text-color-subtle);
+    margin: 0;
+}
+
+/* Schedule Cards */
+.schedule-card {
+    background: var(--card-background);
+    border: 1px solid var(--card-border);
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.schedule-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.schedule-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--countdown-color));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.schedule-card:hover {
+    background: var(--card-hover-background);
+    border-color: var(--primary-color);
+    transform: translateY(-6px) scale(1.02);
+}
+
+.schedule-card:hover::before {
+    left: 100%;
+}
+
+.schedule-card:hover::after {
+    transform: scaleX(1);
+}
+
+.card-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.schedule-card img {
+    width: 140px;
+    height: 210px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--card-border);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.schedule-card:hover img {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+:root[data-theme="light"] .schedule-card img {
+    border: 1px solid #133978;
+}
+
+.schedule-details {
+    flex: 1;
+    min-width: 200px;
+}
+
+.schedule-details h3 {
+    font-size: 1rem;
+    color: var(--title-color);
+    margin-bottom: 5px;
+    font-weight: 700;
+}
+
+/* Tags */
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.tag {
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.tag::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.tag:hover::before {
+    left: 100%;
+}
+
+.tag.Crunchyroll {
+    background: #f37021;
+}
+
+.tag.Telugu {
+    background: #00aaff;
+}
+
+.tag.Series {
+    background: #555;
+}
+
+.tag.Movie {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.tag.SonyYAY {
+    background: #ff6b35;
+}
+
+.tag.Disney,
+.tag.DisneyChannel,
+.tag.DISNEY_CHANNEL {
+    background: #0066cc;
+    color: white;
+}
+
+.tag.TVShow {
+    background: #9333ea;
+}
+
+/* Episode Date Time */
+.episode-date-time {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.date-badge {
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border: 2px solid var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.date-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--countdown-color);
+}
+
+.time-badge {
+    background: var(--countdown-color);
+    color: #0b1220;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border: 2px solid var(--countdown-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.time-badge::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--primary-color);
+}
+
+:root[data-theme="light"] .time-badge {
+    background: transparent;
+    border: 1px solid #133978;
+    color: #133978;
+}
+
+.status-badge {
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 6px 12px;
+    border: 2px solid var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Movie status badge with special styling */
+.status-badge.movie-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    font-weight: 800;
+    animation: moviePulse 2s ease-in-out infinite;
+}
+
+@keyframes moviePulse {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(102, 126, 234, 0.7);
+    }
+}
+
+.status-badge::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--countdown-color);
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.status-badge:hover::before {
+    width: 120%;
+    height: 120%;
+}
+
+.release-time {
+    font-size: 0.8rem;
+    color: var(--release-time-color);
+    margin-bottom: 8px;
+}
+
+.countdown {
+    font-size: 0.85rem;
+    color: var(--countdown-color);
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+.btn-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn:hover {
+    background: var(--countdown-color);
+    color: var(--primary-color);
+    border-color: var(--countdown-color);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* Light mode button styles */
+:root[data-theme="light"] .btn {
+    background: #133978;
+    border-color: #133978;
+    color: #fff;
+}
+
+:root[data-theme="light"] .btn:hover {
+    background: #f37021;
+    border-color: #f37021;
+    color: #fff;
+    transform: translateY(-3px) scale(1.05);
+}
+
+/* Episode Boxes */
+.episode-box {
+    display: inline-block;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    margin: 3px;
+    text-align: center;
+    cursor: pointer;
+    min-width: 40px;
+    transition: all 0.2s ease;
+    border: 2px solid #fff;
+}
+
+.episode-box:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+.episode-box.current {
+    background: var(--primary-color);
+    color: #fff;
+    border: 2px solid var(--primary-color);
+}
+
+.episode-box.current:hover {
+    background: var(--countdown-color);
+    color: var(--primary-color);
+    border-color: var(--countdown-color);
+}
+
+.episode-box.next-ep {
+    background: #f37021;
+    color: #fff;
+    border: 2px solid #f37021;
+}
+
+.episode-box.next-ep:hover {
+    background: #d85a1a;
+}
+
+:root[data-theme="light"] .episode-box {
+    background: transparent;
+    color: #133978;
+    border: 2px solid #133978;
+}
+
+:root[data-theme="light"] .episode-box:hover {
+    background: rgba(19, 57, 120, 0.1);
+}
+
+:root[data-theme="light"] .episode-box.current {
+    background: #133978;
+    color: #fff;
+    border: 2px solid #133978;
+}
+
+:root[data-theme="light"] .episode-box.current:hover {
+    background: #0f2a5f;
+}
+
+:root[data-theme="light"] .episode-box.next-ep {
+    background: #f37021;
+    color: #fff;
+    border: 2px solid #f37021;
+}
+
+:root[data-theme="light"] .episode-box.next-ep:hover {
+    background: #d85a1a;
+}
+
+.episode-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.next-episode-label {
+    color: var(--next-episode-color);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+/* Anime Dashboard */
+.anime-dashboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    padding: 2rem;
+    position: relative;
+}
+
+/* TV Container */
+.tv-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.tv-frame {
+    width: 380px;
+    height: 280px;
+    background: linear-gradient(145deg, #1a1a1a, #2d2d2d, #1a1a1a);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+    position: relative;
+    border: 2px solid #333;
+}
+
+.tv-screen {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #333;
+    box-shadow: 
+        inset 0 0 20px rgba(0, 0, 0, 0.8),
+        inset 0 2px 4px rgba(255, 255, 255, 0.05);
+}
+
+.screen-static {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 255, 255, 0.03) 2px,
+            rgba(255, 255, 255, 0.03) 4px
+        );
+    animation: staticNoise 0.1s linear infinite;
+}
+
+.screen-content {
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: linear-gradient(135deg, rgba(19, 57, 120, 0.1), rgba(0, 0, 0, 0.3));
+    border-radius: 8px;
+}
+
+.channel-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #00d4ff;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 700;
+    background: rgba(0, 212, 255, 0.1);
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.channel-logo {
+    font-size: 1.4rem;
+    filter: drop-shadow(0 0 8px #00d4ff);
+}
+
+.channel-text {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+.now-playing {
+    color: white;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.playing-label {
+    font-size: 0.75rem;
+    color: #ff6b35;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(255, 107, 53, 0.2);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.playing-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.playing-time {
+    font-size: 0.85rem;
+    color: #b0b0b0;
+    margin-bottom: 12px;
+    font-weight: 500;
+    background: rgba(176, 176, 176, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00d4ff, #ff6b35, #f39c12);
+    width: 65%;
+    border-radius: 3px;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    animation: progressMove 3s ease-in-out infinite;
+}
+
+.screen-scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 0, 0.03) 2px,
+        rgba(0, 255, 0, 0.03) 4px
+    );
+    pointer-events: none;
+}
+
+.tv-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.control-button {
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-button.power {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    animation: powerBlink 2s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6);
+}
+
+.control-button.volume {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    box-shadow: 0 0 10px rgba(243, 156, 18, 0.4);
+}
+
+.control-button.channel {
+    background: linear-gradient(135deg, #27ae60, #229954);
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.4);
+}
+
+.control-button:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 20px currentColor;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.tv-stand {
+    width: 120px;
+    height: 25px;
+    background: linear-gradient(145deg, #2c3e50, #34495e, #2c3e50);
+    border-radius: 12px;
+    margin-top: 15px;
+    box-shadow: 
+        0 8px 20px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid #1a252f;
+}
+
+
+
+/* Anime Decorations */
+.anime-decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.decoration-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.star {
+    position: absolute;
+    font-size: 1.2rem;
+    animation: starTwinkle 3s ease-in-out infinite;
+}
+
+.star-1 {
+    top: 15%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.star-2 {
+    top: 25%;
+    right: 15%;
+    animation-delay: 1s;
+}
+
+.star-3 {
+    bottom: 20%;
+    left: 20%;
+    animation-delay: 2s;
+}
+
+.decoration-icons {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.deco-icon {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.3;
+    animation: iconSway 4s ease-in-out infinite;
+}
+
+.icon-1 {
+    top: 10%;
+    right: 5%;
+    animation-delay: 0s;
+}
+
+.icon-2 {
+    bottom: 15%;
+    right: 10%;
+    animation-delay: 1.5s;
+}
+
+.icon-3 {
+    bottom: 30%;
+    left: 5%;
+    animation-delay: 3s;
+}
+
+/* TV and Dashboard Animations */
+@keyframes staticNoise {
+    0% { 
+        opacity: 0.03; 
+    }
+    50% { 
+        opacity: 0.06; 
+    }
+    100% { 
+        opacity: 0.03; 
+    }
+}
+
+@keyframes progressMove {
+    0% { 
+        width: 60%; 
+    }
+    50% { 
+        width: 75%; 
+    }
+    100% { 
+        width: 60%; 
+    }
+}
+
+@keyframes powerBlink {
+    0%, 100% { 
+        opacity: 1; 
+        box-shadow: 0 0 5px #e74c3c; 
+    }
+    50% { 
+        opacity: 0.5; 
+        box-shadow: 0 0 15px #e74c3c; 
+    }
+}
+
+
+
+@keyframes starTwinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1); 
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2); 
+    }
+}
+
+@keyframes iconSway {
+    0%, 100% { 
+        transform: rotate(0deg) translateY(0px); 
+    }
+    25% { 
+        transform: rotate(5deg) translateY(-5px); 
+    }
+    50% { 
+        transform: rotate(0deg) translateY(-10px); 
+    }
+    75% { 
+        transform: rotate(-5deg) translateY(-5px); 
+    }
+}
+
+/* Large Indian Phones - iPhone Pro Max, OnePlus Pro, Samsung Galaxy S-series (430px-768px) */
+@media (min-width: 431px) and (max-width: 768px) {
+    .schedule-container {
+        padding: 0 20px;
+    }
+    
+    .schedule-card {
+        padding: 18px;
+        margin-bottom: 26px;
+    }
+    
+    .anime-title {
+        font-size: 1.1rem;
+    }
+    
+    .episode-info {
+        font-size: 0.9rem;
+    }
+}
+
+/* Indian Phone Optimizations */
+/* Samsung Galaxy A-series, Vivo Y-series, Oppo A-series, Realme budget phones (360px-390px) */
+@media (min-width: 360px) and (max-width: 390px) {
+    .schedule-container {
+        padding: 0 12px;
+    }
+    
+    .schedule-card {
+        padding: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .anime-title {
+        font-size: 0.95rem;
+    }
+    
+    .episode-info {
+        font-size: 0.8rem;
+    }
+}
+
+/* iPhone 12/13/14, OnePlus Nord, Realme flagship phones (390px-430px) */
+@media (min-width: 391px) and (max-width: 430px) {
+    .schedule-container {
+        padding: 0 15px;
+    }
+    
+    .schedule-card {
+        padding: 16px;
+        margin-bottom: 22px;
+    }
+    
+    .anime-title {
+        font-size: 1rem;
+    }
+    
+    .episode-info {
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .hero {
+        padding: 80px 0 40px;
+    }
+    
+    .schedule-wrapper {
+        padding: 40px 0;
+    }
+    
+    .schedule-section {
+        margin-bottom: 60px;
+    }
+    
+    .schedule-container {
+        padding: 0 1rem;
+        margin: 0 1rem;
+        max-width: calc(100% - 2rem);
+    }
+    
+    .section-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+        padding: 15px;
+        margin: 0 0.5rem 20px 0.5rem;
+    }
+    
+    .section-icon {
+        font-size: 2rem;
+        width: 60px;
+        height: 60px;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .anime-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    
+    .anime-content {
+        padding: 15px;
+    }
+    
+    .anime-title {
+        font-size: 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .hero-description {
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-badge {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-stats {
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .stat-item {
+        min-width: 80px;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .hero-actions {
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .schedule-wrapper {
+        padding-top: 1rem;
+        margin-top: 25px;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .schedule-container {
+        margin: 25px auto;
+        padding: 0 15px;
+    }
+
+    .schedule-container:not(:last-child) {
+        margin-bottom: 35px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid var(--card-border);
+    }
+
+    .schedule-heading {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+    }
+
+    .schedule-card {
+        padding: 10px;
+        margin-bottom: 15px;
+        gap: 10px;
+    }
+
+    .card-top {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .schedule-card img {
+        width: 85px;
+        height: 128px;
+    }
+
+    .schedule-details h3 {
+        font-size: 0.8rem;
+        margin-bottom: 3px;
+    }
+
+    .tags {
+        gap: 4px;
+        margin-bottom: 6px;
+    }
+
+    .tag {
+        font-size: 0.6rem;
+        padding: 3px 7px;
+    }
+
+    .episode-date-time {
+        gap: 6px;
+        margin-bottom: 6px;
+    }
+
+    .date-badge,
+    .time-badge,
+    .status-badge {
+        font-size: 0.6rem;
+        padding: 4px 8px;
+    }
+
+    .release-time {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+
+    .countdown {
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+    }
+
+    .btn {
+        font-size: 0.65rem;
+        padding: 6px 10px;
+    }
+
+    .episode-box {
+        font-size: 0.7rem;
+        padding: 4px 7px;
+        min-width: 35px;
+    }
+
+    .episode-grid {
+        gap: 4px;
+        margin-top: 6px;
+    }
+
+    .next-episode-label {
+        font-size: 0.75rem;
+        margin-bottom: 4px;
+    }
+
+    .anime-dashboard {
+        height: auto;
+        padding: 1rem;
+    }
+
+    .tv-frame {
+        width: 340px;
+        height: 250px;
+        padding: 18px;
+    }
+
+    .tv-screen {
+        height: 170px;
+    }
+
+    .screen-content {
+        padding: 10px;
+    }
+
+    .channel-text {
+        font-size: 0.7rem;
+    }
+
+    .playing-title {
+        font-size: 0.9rem;
+    }
+
+    .playing-time {
+        font-size: 0.7rem;
+    }
+
+    .playing-label {
+        font-size: 0.6rem;
+    }
+
+    .tv-controls {
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .control-button {
+        width: 8px;
+        height: 8px;
+    }
+
+    .tv-stand {
+        width: 50px;
+        height: 12px;
+    }
+
+    .star {
+        font-size: 0.9rem;
+    }
+
+    .deco-icon {
+        font-size: 1rem;
+    }
+
+    .hero-visual {
+        height: auto;
+        order: -1;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding: 70px 0 30px;
+    }
+    
+    .schedule-wrapper {
+        padding: 30px 0;
+    }
+    
+    .section-header {
+        padding: 15px;
+        gap: 12px;
+        margin: 0 0.8rem 15px 0.8rem;
+    }
+    
+    .schedule-container {
+        padding: 0 0.8rem;
+        margin: 0 0.8rem;
+        max-width: calc(100% - 1.6rem);
+    }
+    
+    .tab-navigation {
+        margin: 0 0.8rem 25px 0.8rem;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 10px 6px;
+        gap: 4px;
+        font-size: 0.8rem;
+        min-width: auto;
+    }
+    
+    .tab-btn span {
+        display: none;
+    }
+    
+    .tab-btn i {
+        font-size: 1.1rem;
+    }
+    
+    .tab-count {
+        font-size: 0.7rem;
+        padding: 1px 5px;
+        min-width: 16px;
+    }
+    
+    .schedule-card {
+        margin: 0 0.8rem 12px 0.8rem;
+    }
+    
+    .section-icon {
+        font-size: 1.8rem;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .section-title {
+        font-size: 1.3rem;
+    }
+    
+    .section-count {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+    
+    .anime-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .anime-image-container {
+        height: 180px;
+    }
+    
+    .anime-content {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .anime-meta {
+        gap: 6px;
+    }
+    
+    .meta-item {
+        font-size: 0.8rem;
+    }
+
+    .hero-container {
+        padding: 0 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-description {
+        font-size: 0.8rem;
+        margin-bottom: 1.2rem;
+    }
+
+    .hero-badge {
+        font-size: 0.7rem;
+        padding: 0.3rem 0.6rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .hero-stats {
+        gap: 0.8rem;
+        margin-bottom: 1.2rem;
+        flex-wrap: wrap;
+    }
+
+    .stat-item {
+        min-width: 70px;
+    }
+
+    .stat-number {
+        font-size: 1.2rem;
+    }
+
+    .stat-label {
+        font-size: 0.7rem;
+    }
+
+    .hero-actions {
+        gap: 0.6rem;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.75rem;
+    }
+
+    .schedule-wrapper {
+        padding-top: 0.8rem;
+        margin-top: 20px;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .schedule-container {
+        padding: 0 10px;
+        margin: 20px auto;
+    }
+
+    .schedule-container:not(:last-child) {
+        margin-bottom: 25px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--card-border);
+    }
+
+    .schedule-heading {
+        font-size: 1rem;
+        margin-bottom: 12px;
+        padding-bottom: 6px;
+    }
+
+    .schedule-card {
+        padding: 8px;
+        margin-bottom: 12px;
+        gap: 8px;
+    }
+
+    .card-top {
+        gap: 8px;
+    }
+
+    .schedule-card img {
+        width: 70px;
+        height: 105px;
+    }
+
+    .schedule-details h3 {
+        font-size: 0.75rem;
+        margin-bottom: 2px;
+    }
+
+    .tags {
+        gap: 3px;
+        margin-bottom: 5px;
+    }
+
+    .tag {
+        font-size: 0.55rem;
+        padding: 2px 6px;
+    }
+
+    .episode-date-time {
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .date-badge,
+    .time-badge,
+    .status-badge {
+        font-size: 0.55rem;
+        padding: 3px 6px;
+    }
+
+    .release-time {
+        font-size: 0.65rem;
+        margin-bottom: 5px;
+    }
+
+    .countdown {
+        font-size: 0.7rem;
+        margin-bottom: 6px;
+    }
+
+    .btn {
+        font-size: 0.6rem;
+        padding: 5px 8px;
+    }
+
+    .episode-box {
+        font-size: 0.65rem;
+        padding: 3px 6px;
+        min-width: 30px;
+    }
+
+    .episode-grid {
+        gap: 3px;
+        margin-top: 5px;
+    }
+
+    .next-episode-label {
+        font-size: 0.7rem;
+        margin-bottom: 3px;
+    }
+
+    .anime-dashboard {
+        padding: 0.8rem;
+    }
+
+    .tv-frame {
+        width: 320px;
+        height: 240px;
+        padding: 15px;
+    }
+
+    .tv-screen {
+        height: 200px;
+    }
+
+    .screen-content {
+        padding: 10px;
+    }
+
+    .channel-text {
+        font-size: 0.7rem;
+    }
+
+    .playing-title {
+        font-size: 0.85rem;
+        line-height: 1.2;
+    }
+
+    .playing-time {
+        font-size: 0.7rem;
+    }
+
+    .playing-label {
+        font-size: 0.6rem;
+    }
+
+    .tv-controls {
+        gap: 6px;
+        margin-top: 6px;
+    }
+
+    .control-button {
+        width: 7px;
+        height: 7px;
+    }
+
+    .tv-stand {
+        width: 40px;
+        height: 10px;
+    }
+
+    .star {
+        font-size: 0.8rem;
+    }
+
+    .deco-icon {
+        font-size: 0.9rem;
+    }
+}
+
+/* Smooth scroll behavior */
+html {
+    scroll-behavior: smooth;
+}
+
+
+
+/* Utility function for scrolling */
+.scroll-target {
+    scroll-margin-top: 100px;
+}
+
+/* Ultra Small Budget Phones (320px and below) */
+@media (max-width: 320px) {
+    .hero {
+        padding: 60px 0 25px;
+    }
+
+    .hero-container {
+        padding: 0 0.8rem;
+    }
+
+    .hero-title {
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .hero-description {
+        font-size: 0.75rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-badge {
+        font-size: 0.65rem;
+        padding: 0.25rem 0.5rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .hero-stats {
+        gap: 0.6rem;
+        margin-bottom: 1rem;
+    }
+
+    .stat-item {
+        min-width: 60px;
+    }
+
+    .stat-number {
+        font-size: 1rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .hero-actions {
+        gap: 0.5rem;
+    }
+
+    .cta-primary,
+    .cta-secondary {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+    }
+
+    .schedule-wrapper {
+        padding-top: 0.6rem;
+        margin-top: 15px;
+        border-top: 1px solid var(--card-border);
+    }
+
+    .schedule-container {
+        padding: 0 8px;
+        margin: 15px auto;
+    }
+
+    .schedule-container:not(:last-child) {
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--card-border);
+    }
+    
+    .schedule-heading {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+    }
+    
+    .schedule-card {
+        padding: 6px;
+        margin-bottom: 10px;
+        gap: 6px;
+    }
+
+    .card-top {
+        gap: 6px;
+    }
+    
+    .schedule-card img {
+        width: 60px;
+        height: 90px;
+    }
+    
+    .schedule-details h3 {
+        font-size: 0.7rem;
+        margin-bottom: 1px;
+    }
+
+    .tags {
+        gap: 2px;
+        margin-bottom: 4px;
+    }
+    
+    .tag {
+        font-size: 0.5rem;
+        padding: 2px 5px;
+    }
+
+    .episode-date-time {
+        gap: 4px;
+        margin-bottom: 4px;
+    }
+
+    .date-badge,
+    .time-badge,
+    .status-badge {
+        font-size: 0.5rem;
+        padding: 2px 5px;
+    }
+
+    .release-time {
+        font-size: 0.6rem;
+        margin-bottom: 4px;
+    }
+    
+    .countdown {
+        font-size: 0.65rem;
+        margin-bottom: 5px;
+    }
+
+    .btn {
+        font-size: 0.55rem;
+        padding: 4px 6px;
+    }
+
+    .episode-box {
+        font-size: 0.6rem;
+        padding: 2px 5px;
+        min-width: 25px;
+    }
+
+    .episode-grid {
+        gap: 2px;
+        margin-top: 4px;
+    }
+
+    .next-episode-label {
+        font-size: 0.65rem;
+        margin-bottom: 2px;
+    }
+
+    .anime-dashboard {
+        padding: 0.6rem;
+    }
+
+    .tv-frame {
+        width: 300px;
+        height: 225px;
+        padding: 12px;
+    }
+
+    .tv-screen {
+        height: 190px;
+    }
+
+    .screen-content {
+        padding: 10px;
+    }
+
+    .channel-text {
+        font-size: 0.65rem;
+    }
+
+    .playing-title {
+        font-size: 0.8rem;
+        line-height: 1.2;
+    }
+
+    .playing-time {
+        font-size: 0.65rem;
+    }
+
+    .playing-label {
+        font-size: 0.55rem;
+    }
+
+    .tv-controls {
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .control-button {
+        width: 6px;
+        height: 6px;
+    }
+
+    .tv-stand {
+        width: 35px;
+        height: 8px;
+    }
+
+    .star {
+        font-size: 0.7rem;
+    }
+
+    .deco-icon {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .tab-navigation {
+        margin: 0 0.5rem 30px 0.5rem;
+        max-width: none;
+        width: auto;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 12px 8px;
+        gap: 6px;
+        font-size: 0.9rem;
+        min-width: auto;
+    }
+    
+    .tab-btn span {
+        display: none;
+    }
+    
+    .tab-btn i {
+        font-size: 1.2rem;
+    }
+    
+    .tab-count {
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        min-width: 18px;
+    }
+    
+    .schedule-card {
+        margin: 0 0.5rem 15px 0.5rem;
+    }
+}    
+
+    .schedule-container {
+        padding: 0 0.6rem;
+        margin: 0 0.6rem;
+        max-width: calc(100% - 1.2rem);
+    }
+    
+    .section-header {
+        padding: 12px;
+        margin: 0 0.6rem 12px 0.6rem;
+    }
+    
+    .tab-navigation {
+        margin: 0 0.6rem 20px 0.6rem;
+    }
+    
+    .tab-btn {
+        flex: 1;
+        padding: 8px 4px;
+        gap: 3px;
+        font-size: 0.75rem;
+        min-width: auto;
+    }
+    
+    .tab-btn span {
+        display: none;
+    }
+    
+    .tab-btn i {
+        font-size: 1rem;
+    }
+    
+    .tab-count {
+        font-size: 0.65rem;
+        padding: 1px 4px;
+        min-width: 14px;
+    }
+    
+    .schedule-card {
+        margin: 0 0.6rem 10px 0.6rem;
+    }
+/*
+ Large Screen 2-Column Layout */
+@media (min-width: 1200px) {
+    .tab-panel {
+        display: none;
+    }
+    
+    .tab-panel.active {
+        display: block;
+    }
+    
+    #upcoming-container,
+    #weekly-container,
+    #tv-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+    
+    .schedule-card {
+        margin-bottom: 20px;
+    }
+}
+
+/* Large Screen Tab Centering */
+@media (min-width: 769px) {
+    .tab-navigation {
+        width: 520px;
+        margin: 0 auto 40px auto;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .section-header {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 30px auto;
+    }
+    
+    .section-subtitle {
+        text-align: center;
+        margin: 0 auto;
+        max-width: 500px;
+    }
+}

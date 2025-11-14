@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - TADB - Telugu Anime Database</title>
+    <link rel="stylesheet" href="about-us-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Font loading optimization */
+        @font-face {
+            font-family: 'Inter';
+            font-display: swap;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="voice-artists-real.html" class="nav-link">
+                    <i class="fas fa-microphone nav-icon"></i>
+                    <span>Voice Artists</span>
+                </a>
+                <a href="anime-schedule.html" class="nav-link">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule</span>
+                </a>
+                <a href="about-us.html" class="nav-link active">
+                    <i class="fas fa-info-circle nav-icon"></i>
+                    <span>About</span>
+                </a>
+                <a href="contact-us.html" class="nav-link">
+                    <i class="fas fa-envelope nav-icon"></i>
+                    <span>Contact Us</span>
+                </a>
+            </div>
+
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" class="mobile-nav-link">
+                <i class="fas fa-home mobile-nav-icon"></i>
+                <span>Home</span>
+            </a>
+            <a href="voice-artists-real.html" class="mobile-nav-link">
+                <i class="fas fa-microphone mobile-nav-icon"></i>
+                <span>Voice Artists</span>
+            </a>
+            <a href="anime-schedule.html" class="mobile-nav-link">
+                <i class="fas fa-calendar mobile-nav-icon"></i>
+                <span>Schedule</span>
+            </a>
+            <a href="about-us.html" class="mobile-nav-link active">
+                <i class="fas fa-info-circle mobile-nav-icon"></i>
+                <span>About</span>
+            </a>
+            <a href="contact-us.html" class="mobile-nav-link">
+                <i class="fas fa-envelope mobile-nav-icon"></i>
+                <span>Contact Us</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-users"></i>
+                    <span>About TADB</span>
+                </div>
+                <h1 class="hero-title">
+                    Telugu Anime
+                    <span class="hero-highlight">Database</span>
+                </h1>
+                <p class="hero-description">
+                    Your ultimate destination for Telugu dubbed anime information, voice artist credits, 
+                    and streaming schedules. Discover the world of anime in your native language.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalPosts">25</span>
+                            <span class="stat-label">Anime Titles</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number" id="totalArtists">5</span>
+                            <span class="stat-label">Voice Artists</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-number">24/7</span>
+                            <span class="stat-label">Updated</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-elements">
+                    <div class="float-element element-1">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <div class="float-element element-2">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="float-element element-3">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="float-element element-4">
+                        <i class="fas fa-language"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Our Mission</h2>
+                <p class="section-subtitle">Bringing anime closer to Telugu audiences</p>
+            </div>
+            <div class="mission-grid">
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Comprehensive Database</h3>
+                    <p>We maintain the most complete database of Telugu dubbed anime, including detailed information about series, movies, and OVAs.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Voice Artist Credits</h3>
+                    <p>Recognizing the talented Telugu voice artists who bring these characters to life with detailed credits and profiles.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Real-time Updates</h3>
+                    <p>Stay updated with the latest Telugu anime releases, streaming schedules, and broadcast information.</p>
+                </div>
+                <div class="mission-card">
+                    <div class="mission-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Educational Purpose</h3>
+                    <p>Providing information for educational and informational purposes only, promoting anime culture in Telugu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What We Offer</h2>
+                <p class="section-subtitle">Everything you need to know about Telugu anime</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>Content Creator List</h3>
+                        <p>Meet the talented content creators behind your favorite anime with detailed profiles and contributions.</p>
+                        <a href="content-creators.html" class="feature-link">
+                            <span>View Creators</a><span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-microphone-alt"></i>
+                        </div>
+                        <h3>Voice Artists</h3>
+                        <p>Complete profiles of Telugu voice artists with their character roles and contribution to anime dubbing.</p>
+                        <a href="voice-artists-real.html" class="feature-link">
+                            <span>View Artists</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Anime Schedule</h3>
+                        <p>Stay updated with Telugu anime release schedules, broadcast times, and streaming platform information.</p>
+                        <a href="anime-schedule.html" class="feature-link">
+                            <span>Check Schedule</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <h3>Streaming Platforms</h3>
+                        <p>Information about where to watch Telugu dubbed anime across various streaming platforms and TV channels.</p>
+                        <a href="#" class="feature-link">
+                            <span>View Platforms</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>IMDB Ranked</h3>
+                        <p>Discover top-rated Telugu anime based on IMDB rankings and community reviews.</p>
+                        <a href="#" class="feature-link">
+                            <span>Top Rated</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-content">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3>Mobile Friendly</h3>
+                        <p>Access TADB on any device with our responsive design optimized for mobile and desktop viewing.</p>
+                        <a href="#" class="feature-link">
+                            <span>Learn More</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Telugu Production Team</h2>
+                <p class="section-subtitle">The people behind Telugu anime dubbing</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="team-info">
+                        <h3>Voice Directors</h3>
+                        <p>Experienced directors who oversee the Telugu dubbing process and ensure quality voice acting.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <div class="team-info">
+                        <h3>Voice Artists</h3>
+                        <p>Talented Telugu voice actors who bring anime characters to life with their exceptional performances.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <div class="team-info">
+                        <h3>Audio Engineers</h3>
+                        <p>Technical experts who handle sound mixing, editing, and post-production for Telugu anime dubs.</p>
+                    </div>
+                </div>
+                <div class="team-card">
+                    <div class="team-avatar">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="team-info">
+                        <h3>Script Writers</h3>
+                        <p>Creative writers who adapt Japanese scripts to Telugu while maintaining cultural relevance.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disclaimer Section -->
+    <section class="disclaimer-section">
+        <div class="container">
+            <div class="disclaimer-card">
+                <div class="disclaimer-icon">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div class="disclaimer-content">
+                    <h3>Important Disclaimer</h3>
+                    <p>
+                        We are a <span class="highlight">Telugu anime database only</span>. We do not host or link to 
+                        pirated content and do not encourage piracy. This site provides information about Telugu-dubbed anime 
+                        — including dub artist credits and broadcast/streaming schedules — for 
+                        <span class="highlight">educational and informational purposes only</span>. 
+                        If you believe any content on this site infringes your rights, please contact us.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="disclaimer-section">
+            <h4>Disclaimer</h4>
+            <p>TADB is a fan-made database for Telugu anime content. All anime titles, images, and related content are
+                the property of their respective owners and studios. This website is for informational and entertainment
+                purposes only. We do not host or distribute any copyrighted content.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TADB - Telugu Anime Database. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="theme-manager.js"></script>
+    <script src="about-us-script.js"></script>
+</body>
+
+</html>

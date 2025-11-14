@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Artists - TADB</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="voice-artist-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="back-toggle" onclick="history.back()">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            </div>
+
+            <div class="nav-center">
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+
+            <div class="nav-right">
+                <button class="search-toggle" id="searchToggle">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box" id="searchBox">
+            <div class="search-container">
+                <input type="text" placeholder="Search artists, roles, anime..." class="search-input" id="voiceArtistSearchInput">
+                <i class="fas fa-search search-icon"></i>
+                <button class="search-btn" id="voiceArtistSearchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="clear-search-btn" id="clearSearchBtn" style="display: none;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-container">
+            <div class="hero-background">
+                <div class="hero-gradient"></div>
+                <div class="hero-particles">
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                    <div class="particle"></div>
+                </div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-microphone"></i>
+                    <span>Voice Artists Hub</span>
+                </div>
+                
+                <h1 class="hero-title">
+                    Meet Our Talented
+                    <span class="hero-highlight">Voice Artists</span>
+                </h1>
+                
+                <p class="hero-description">
+                    Discover the voices behind your favorite anime characters. 
+                    Our talented team brings stories to life with passion and creativity.
+                </p>
+                
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalArtists">0</div>
+                        <div class="stat-label">Voice Artists</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCharacters">0</div>
+                        <div class="stat-label">Characters</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalProductionTeam">0</div>
+                        <div class="stat-label">Production Team</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalDubbingStudios">0</div>
+                        <div class="stat-label">Dubbing Studios</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalAnimes">0</div>
+                        <div class="stat-label">Anime Series</div>
+                    </div>
+                </div>
+                
+                <div class="hero-cta">
+                    <a href="#artists-section" class="cta-button primary">
+                        <i class="fas fa-microphone"></i>
+                        <span>Browse Voice Artists</span>
+                    </a>
+                    <a href="#leaderboard-section" class="cta-button secondary">
+                        <i class="fas fa-trophy"></i>
+                        <span>View Leaderboard</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="featured-artists">
+                    <div class="artist-avatar floating" style="--delay: 0s">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiwALrO96FUcdMYrVONs7MYHgDAHXUE-g-6YgKSUx2tSltG_77AcOyuyravuihg1H8fKn86vbmk2CE9Y85GiE2mEwa6V597tH74Aq2kd0eNIEL1Ka9-OMtbhDR6Iq_NQEIUOEwg7IUuSX-0-uw2SmWIZ9x9b1-u6fwsQ0_8U5gDCxfwQ8MXxPKonx4KT6I/s16000/Uncle%20look%20Vandhuducho%20%F0%9F%98%90.jpg" alt="Sai Sujith">
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="artist-avatar floating" style="--delay: 0.5s">
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-Gg5HklfjHgAAEfIHIGaWcmrC3uaaZy16krsEjw-Ddc6xXjCOq_MHyz7LVLC7VFJEjiaa0re64jtQUUdO9dBRw3IFtcpmQkgm2ZpFo-mgW_oCtg2knKhDXOg-4houNQlqltIxzFueLP3ZecI7vk31GgOwy8HnsbXsatd5-Y1s7G0bUJoZPipb0jmljIY/s16000/561953572_17860777236505852_3392323022244206449_n..jpg" alt="Kedharnath">
+                        <div class="avatar-ring"></div>
+                    </div>
+                    <div class="artist-avatar floating" style="--delay: 1s">
+                        <img src="https://blogger.googleusercontent.com/img/a/AVvXsEgqSAoFrLipdqwCxIPX5XlfrVUdkzLsUgLP2kBrKm0WmYZ4cR24RnY1jVcg_bwtmC_TSHZYaBtBqDQsmy02kDdQAjYv2iC51E__lTKzvMkh9Sj64_wrPot2URldD5C5oCZDdY368nc0punGcbwdXDgaNAGA9cYhwlfTnlFcjNWbFQ7p_Qcz5o4H3yAbsUU=s16000" alt="Govardhiniprakash">
+                        <div class="avatar-ring"></div>
+                    </div>
+                </div>
+                
+                <div class="sound-waves">
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                    <div class="wave"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Voice Artists Section -->
+    <section class="voice-artists-section" id="artists-section">
+        <div class="voice-artists-container">
+            <div class="voice-artists-header">
+                <h1 class="voice-artists-title">🎭 Production Team & Dubbing Studios</h1>
+                <p class="voice-artists-subtitle">Click on any artist name to view their details</p>
+                
+                <!-- Prominent Search Bar -->
+                <div class="prominent-search-container">
+                    <div class="prominent-search-box">
+                        <i class="fas fa-search prominent-search-icon"></i>
+                        <input type="text" placeholder="Search artists, roles, anime series..." class="prominent-search-input" id="prominentSearchInput">
+                        <button class="prominent-clear-btn" id="prominentClearBtn" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="search-suggestions">
+                        <span class="search-tip">💡 Try: "script writer", "dubbing studio", or anime names</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pagination Container -->
+            <div class="pagination-container">
+                <div class="voice-artists-list" id="voiceArtistsList">
+                    <!-- Artists will be automatically loaded from post data -->
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-controls" id="paginationControls" style="display: none;">
+                    <div class="pagination-info">
+                        <span class="page-info">
+                            Showing <span id="currentRangeStart">1</span>-<span id="currentRangeEnd">20</span> of <span id="totalArtistsCount">0</span> artists
+                        </span>
+                    </div>
+                    
+                    <div class="pagination-buttons">
+                        <button class="pagination-btn prev-btn" id="prevBtn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                            <span>Previous</span>
+                        </button>
+                        
+                        <div class="page-numbers" id="pageNumbers">
+                            <!-- Page numbers will be dynamically generated -->
+                        </div>
+                        
+                        <button class="pagination-btn next-btn" id="nextBtn">
+                            <span>Next</span>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="pagination-jump">
+                        <span>Go to page:</span>
+                        <input type="number" id="pageJumpInput" min="1" placeholder="1">
+                        <button class="jump-btn" id="jumpBtn">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+
+        </div>
+    </section>
+
+    <!-- Search Notice Section -->
+    <section class="search-notice-section" id="searchNoticeSection" style="display: none;">
+        <div class="search-notice-container">
+            <div class="search-notice">
+                <i class="fas fa-info-circle notice-icon"></i>
+                <div class="notice-content">
+                    <h4>Search Results</h4>
+                    <p>Showing results for "<span id="searchQuery"></span>". Search works across artist names, roles, and anime series.</p>
+                </div>
+                <button class="notice-close" onclick="clearSearch()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Leaderboard Section -->
+    <section class="leaderboard-section" id="leaderboard-section">
+        <div class="leaderboard-container">
+            <div class="leaderboard-header">
+                <h2 class="leaderboard-title">🏆 Top Contributors</h2>
+                <p class="leaderboard-subtitle">Our most active voice artists and contributors</p>
+            </div>
+            
+            <div class="leaderboard-grid">
+                <div class="leaderboard-category">
+                    <div class="category-header">
+                        <i class="fas fa-microphone category-icon"></i>
+                        <h3>Voice Artists</h3>
+                        <span class="category-subtitle">Most Characters Voiced</span>
+                    </div>
+                    <div class="leaderboard-list" id="voiceArtistsLeaderboard">
+                        <!-- Top voice artists will be listed here -->
+                    </div>
+                </div>
+                
+                <div class="leaderboard-category">
+                    <div class="category-header">
+                        <i class="fas fa-cogs category-icon"></i>
+                        <h3>Production Team</h3>
+                        <span class="category-subtitle">Writers, Directors, Engineers & More</span>
+                    </div>
+                    <div class="leaderboard-list" id="productionTeamLeaderboard">
+                        <!-- Top production team will be listed here -->
+                    </div>
+                </div>
+                
+                <div class="leaderboard-category">
+                    <div class="category-header">
+                        <i class="fas fa-building category-icon"></i>
+                        <h3>Dubbing Studios</h3>
+                        <span class="category-subtitle">Most Projects Dubbed</span>
+                    </div>
+                    <div class="leaderboard-list" id="dubbingStudiosLeaderboard">
+                        <!-- Top dubbing studios will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="disclaimer-section">
+            <h4>Disclaimer</h4>
+            <p>TADB is a fan-made database for Telugu anime content and voice artists. All anime titles, images, and
+                related content are the property of their respective owners and studios. This website is for
+                informational and entertainment purposes only.</p>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 TADB - Telugu Anime Database. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="posts-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script src="post-script.js"></script>
+    <script src="voice-artist-sync.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 Easy Post Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .header h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        .stat-box {
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+        .stat-box strong {
+            color: #667eea;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .editor-section, .posts-section {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-save {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-export {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-clear {
+            background: #ff9800;
+            color: white;
+        }
+
+        .post-item {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .post-title {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-edit {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .post-info {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 Easy Post Editor</h1>
+            <p>Super simple! Edit locally → Export → Upload to GitHub</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <strong>Total Posts:</strong> <span id="totalPosts">0</span>
+                </div>
+                <div class="stat-box">
+                    <strong>Last Updated:</strong> <span id="lastUpdated">Never</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Editor Section -->
+            <div class="editor-section">
+                <h2>✏️ Add/Edit Post</h2>
+                
+                <form id="postForm">
+                    <input type="hidden" id="editingId">
+                    
+                    <!-- Basic Info -->
+                    <h3 style="color: #667eea; margin-bottom: 15px;">📝 Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label>Title *</label>
+                        <input type="text" id="title" required placeholder="e.g., Naruto">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Year *</label>
+                            <input type="text" id="year" required placeholder="e.g., 2024">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Season/Type *</label>
+                            <input type="text" id="season" required placeholder="e.g., Season 1, Movie">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Synopsis *</label>
+                        <textarea id="synopsis" required placeholder="Brief description..." style="min-height: 100px;"></textarea>
+                    </div>
+
+                    <!-- Images -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">🖼️ Images</h3>
+                    
+                    <div class="form-group">
+                        <label>Poster URL *</label>
+                        <input type="url" id="poster" required placeholder="https://...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Backdrop URL</label>
+                        <input type="url" id="backdrop" placeholder="https://...">
+                    </div>
+
+                    <!-- Details -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">📊 Details</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>IMDb Rating</label>
+                            <input type="text" id="rating" placeholder="e.g., 8.5">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Age Rating</label>
+                            <input type="text" id="ageRating" placeholder="e.g., PG-13" value="PG-13">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="status">
+                                <option value="Completed">Completed</option>
+                                <option value="Ongoing">Ongoing</option>
+                                <option value="Upcoming">Upcoming</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Genres (comma separated)</label>
+                            <input type="text" id="genres" placeholder="e.g., Action, Adventure, Drama">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Studio</label>
+                            <input type="text" id="studio" placeholder="e.g., Ufotable">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Format</label>
+                            <input type="text" id="format" placeholder="e.g., Season 01">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Duration</label>
+                            <input type="text" id="duration" placeholder="e.g., 24 min">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Total Episodes</label>
+                            <input type="text" id="totalEpisodes" placeholder="e.g., 12">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Premiere Date</label>
+                            <input type="text" id="premiereDate" placeholder="e.g., Released on 2025">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Broadcast</label>
+                            <input type="text" id="broadcast" placeholder="e.g., OTT (Crunchyroll)">
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Language</label>
+                            <input type="text" id="language" placeholder="e.g., Telugu Dub Available" value="Telugu Dub Available">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Air Season</label>
+                            <select id="airSeason">
+                                <option value="Winter">Winter</option>
+                                <option value="Spring">Spring</option>
+                                <option value="Summer">Summer</option>
+                                <option value="Fall">Fall</option>
+                                <option value="Unknown" selected>Unknown</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>MRP Credit</label>
+                            <select id="mrp">
+                                <option value="none" selected>Hidden</option>
+                                <option value="Visible">Visible</option>
+                            </select>
+                            <small style="color: #666; font-size: 12px;">Show "Fan made poster by MRP Networks"</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>View Count (Display)</label>
+                            <input type="text" id="viewCount" placeholder="e.g., 4.2M">
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">📈 Statistics</h3>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                        <div class="form-group">
+                            <label>Statistics Rating</label>
+                            <input type="text" id="statRating" placeholder="e.g., 6.9">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Liked Percentage</label>
+                            <input type="text" id="likedPercentage" placeholder="e.g., 94%">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Total Views</label>
+                            <input type="text" id="totalViews" placeholder="e.g., 4.2M">
+                        </div>
+                    </div>
+
+                    <!-- Cast & Crew -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">👥 Cast & Crew (JSON Format)</h3>
+                    
+                    <div class="form-group">
+                        <label>Cast Members</label>
+                        <textarea id="castData" placeholder='[{"actorName":"Actor Name","characterName":"Character","actorImage":"URL","characterImage":"URL"}]' style="min-height: 80px; font-family: monospace; font-size: 12px;"></textarea>
+                        <small style="color: #666; font-size: 12px;">JSON array format. Leave empty if none.</small>
+                        <button type="button" onclick="validateJSON('castData')" style="margin-top: 5px; padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ Validate JSON</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Crew Members</label>
+                        <textarea id="crewData" placeholder='[{"name":"Name","role":"Role","avatar":"URL","projectImage":"URL"}]' style="min-height: 80px; font-family: monospace; font-size: 12px;"></textarea>
+                        <small style="color: #666; font-size: 12px;">JSON array format. Leave empty if none.</small>
+                        <button type="button" onclick="validateJSON('crewData')" style="margin-top: 5px; padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ Validate JSON</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Dubbing Studios</label>
+                        <textarea id="dubbingStudiosData" placeholder='[{"name":"Studio Name","role":"Dubbing Studio","location":"City","avatar":"URL","projectImage":"URL"}]' style="min-height: 80px; font-family: monospace; font-size: 12px;"></textarea>
+                        <small style="color: #666; font-size: 12px;">JSON array format. Leave empty if none.</small>
+                        <button type="button" onclick="validateJSON('dubbingStudiosData')" style="margin-top: 5px; padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ Validate JSON</button>
+                    </div>
+
+                    <!-- Trailers -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">🎬 Trailers (JSON Format)</h3>
+                    
+                    <div class="form-group">
+                        <label>Trailers</label>
+                        <textarea id="trailersData" placeholder='[{"title":"Official Trailer","description":"Description","thumbnail":"URL","videoId":"YouTube_ID"}]' style="min-height: 80px; font-family: monospace; font-size: 12px;"></textarea>
+                        <small style="color: #666; font-size: 12px;">Use YouTube video ID only. Leave empty if none.</small>
+                        <button type="button" onclick="validateJSON('trailersData')" style="margin-top: 5px; padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ Validate JSON</button>
+                    </div>
+
+                    <!-- Platforms -->
+                    <h3 style="color: #667eea; margin: 25px 0 15px;">📺 Streaming Platforms (JSON Format)</h3>
+                    
+                    <div class="form-group">
+                        <label>Platforms</label>
+                        <textarea id="platformsData" placeholder='[{"name":"Crunchyroll","status":"Available","icon":"URL"}]' style="min-height: 80px; font-family: monospace; font-size: 12px;"></textarea>
+                        <small style="color: #666; font-size: 12px;">JSON array format. Leave empty if none.</small>
+                        <button type="button" onclick="validateJSON('platformsData')" style="margin-top: 5px; padding: 5px 10px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 12px;">✓ Validate JSON</button>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-save">💾 Save Post</button>
+                        <button type="button" class="btn-clear" onclick="clearForm()">🔄 Clear</button>
+                    </div>
+                </form>
+
+                <div class="button-group" style="margin-top: 20px;">
+                    <button class="btn-export" onclick="exportPosts()">📤 Export to GitHub</button>
+                    <button class="btn-clear" onclick="exportBackup()">💾 Backup All Data</button>
+                    <button class="btn-clear" onclick="document.getElementById('importFile').click()">📥 Import Backup</button>
+                </div>
+                <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importBackup(event)">
+            </div>
+
+            <!-- Posts List Section -->
+            <div class="posts-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; gap: 15px; flex-wrap: wrap;">
+                    <h2 style="margin: 0;">📚 Your Posts</h2>
+                    <input type="text" id="searchPosts" placeholder="🔍 Search posts..." style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 8px; width: 250px;">
+                </div>
+                <div id="postsCount" style="color: #666; font-size: 14px; margin-bottom: 15px;"></div>
+                <div id="postsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="easy-posts-manager.js"></script>
+    <script>
+        // Load posts on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPosts();
+            updateStats();
+            
+            // Setup search
+            document.getElementById('searchPosts').addEventListener('input', (e) => {
+                loadPosts(e.target.value);
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('postForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            savePost();
+        });
+
+        function savePost() {
+            const editingId = document.getElementById('editingId').value;
+            
+            // Helper function to parse JSON safely
+            const parseJSON = (str) => {
+                if (!str || str.trim() === '') return null;
+                try {
+                    return JSON.parse(str);
+                } catch (e) {
+                    return null;
+                }
+            };
+            
+            const post = {
+                title: document.getElementById('title').value,
+                year: document.getElementById('year').value,
+                season: document.getElementById('season').value,
+                synopsis: document.getElementById('synopsis').value,
+                poster: document.getElementById('poster').value,
+                backdrop: document.getElementById('backdrop').value || '',
+                rating: document.getElementById('rating').value || '',
+                ageRating: document.getElementById('ageRating').value || 'PG-13',
+                status: document.getElementById('status').value || 'Completed',
+                genres: document.getElementById('genres').value || '',
+                studio: document.getElementById('studio').value || '',
+                format: document.getElementById('format').value || '',
+                duration: document.getElementById('duration').value || '',
+                totalEpisodes: document.getElementById('totalEpisodes').value || '',
+                premiereDate: document.getElementById('premiereDate').value || '',
+                broadcast: document.getElementById('broadcast').value || '',
+                language: document.getElementById('language').value || 'Telugu Dub Available',
+                airSeason: document.getElementById('airSeason').value || 'Unknown',
+                mrp: document.getElementById('mrp').value || 'none',
+                viewCount: document.getElementById('viewCount').value || ''
+            };
+
+            // Add statistics if provided
+            const statRating = document.getElementById('statRating').value;
+            const likedPercentage = document.getElementById('likedPercentage').value;
+            const totalViews = document.getElementById('totalViews').value;
+            
+            if (statRating || likedPercentage || totalViews) {
+                post.statistics = {
+                    rating: statRating || '',
+                    likedPercentage: likedPercentage || '',
+                    totalViews: totalViews || ''
+                };
+            }
+
+            // Add cast, crew, dubbing studios, trailers, platforms
+            const castData = parseJSON(document.getElementById('castData').value);
+            const crewData = parseJSON(document.getElementById('crewData').value);
+            const dubbingStudiosData = parseJSON(document.getElementById('dubbingStudiosData').value);
+            const trailersData = parseJSON(document.getElementById('trailersData').value);
+            const platformsData = parseJSON(document.getElementById('platformsData').value);
+            
+            if (castData) post.cast = castData;
+            if (crewData) post.crew = crewData;
+            if (dubbingStudiosData) post.dubbingStudios = dubbingStudiosData;
+            if (trailersData) post.trailers = trailersData;
+            if (platformsData) post.platforms = platformsData;
+
+            if (editingId) {
+                // Update existing
+                postsManager.updatePost(editingId, post);
+                showMessage('✅ Post updated successfully!');
+            } else {
+                // Add new
+                postsManager.addPost(post);
+                showMessage('✅ Post added successfully!');
+            }
+
+            clearForm();
+            loadPosts();
+            updateStats();
+        }
+
+        function loadPosts(searchQuery = '') {
+            let posts = postsManager.getAllPosts();
+            const container = document.getElementById('postsList');
+            const countEl = document.getElementById('postsCount');
+            
+            const totalPosts = posts.length;
+
+            if (totalPosts === 0) {
+                container.innerHTML = '<div class="empty-state">No posts yet. Add your first post! 🎬</div>';
+                countEl.textContent = '';
+                return;
+            }
+
+            // Filter by search
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase();
+                posts = posts.filter(post => 
+                    post.title.toLowerCase().includes(query) ||
+                    (post.genres && post.genres.toLowerCase().includes(query)) ||
+                    (post.year && post.year.toString().includes(query))
+                );
+            }
+
+            // Update count
+            if (searchQuery.trim()) {
+                countEl.textContent = `Showing ${posts.length} of ${totalPosts} posts`;
+            } else {
+                countEl.textContent = `Total: ${totalPosts} posts`;
+            }
+
+            if (posts.length === 0) {
+                container.innerHTML = '<div class="empty-state">🔍 No posts found matching your search.</div>';
+                return;
+            }
+
+            container.innerHTML = posts.map(post => `
+                <div class="post-item">
+                    <div class="post-header">
+                        <div class="post-title">${post.title}</div>
+                        <div class="post-actions">
+                            <button class="btn-small btn-edit" onclick="editPost('${post.id}')">✏️ Edit</button>
+                            <button class="btn-small btn-delete" onclick="deletePost('${post.id}')">🗑️</button>
+                        </div>
+                    </div>
+                    <div class="post-info">
+                        ${post.year} • ${post.season} • ${post.genres || 'No genres'} ${post.rating ? '• ⭐ ' + post.rating : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function editPost(id) {
+            const posts = postsManager.getAllPosts();
+            const post = posts.find(p => p.id === id);
+            
+            if (post) {
+                document.getElementById('editingId').value = post.id;
+                document.getElementById('title').value = post.title || '';
+                document.getElementById('year').value = post.year || '';
+                document.getElementById('season').value = post.season || '';
+                document.getElementById('synopsis').value = post.synopsis || '';
+                document.getElementById('poster').value = post.poster || '';
+                document.getElementById('backdrop').value = post.backdrop || '';
+                document.getElementById('rating').value = post.rating || '';
+                document.getElementById('ageRating').value = post.ageRating || 'PG-13';
+                document.getElementById('status').value = post.status || 'Completed';
+                document.getElementById('genres').value = post.genres || '';
+                document.getElementById('studio').value = post.studio || '';
+                document.getElementById('format').value = post.format || '';
+                document.getElementById('duration').value = post.duration || '';
+                document.getElementById('totalEpisodes').value = post.totalEpisodes || '';
+                document.getElementById('premiereDate').value = post.premiereDate || '';
+                document.getElementById('broadcast').value = post.broadcast || '';
+                document.getElementById('language').value = post.language || 'Telugu Dub Available';
+                document.getElementById('airSeason').value = post.airSeason || 'Unknown';
+                document.getElementById('mrp').value = post.mrp || 'none';
+                document.getElementById('viewCount').value = post.viewCount || '';
+                
+                // Statistics
+                if (post.statistics) {
+                    document.getElementById('statRating').value = post.statistics.rating || '';
+                    document.getElementById('likedPercentage').value = post.statistics.likedPercentage || '';
+                    document.getElementById('totalViews').value = post.statistics.totalViews || '';
+                }
+                
+                // Cast, crew, dubbing studios, trailers, platforms
+                document.getElementById('castData').value = post.cast ? JSON.stringify(post.cast, null, 2) : '';
+                document.getElementById('crewData').value = post.crew ? JSON.stringify(post.crew, null, 2) : '';
+                document.getElementById('dubbingStudiosData').value = post.dubbingStudios ? JSON.stringify(post.dubbingStudios, null, 2) : '';
+                document.getElementById('trailersData').value = post.trailers ? JSON.stringify(post.trailers, null, 2) : '';
+                document.getElementById('platformsData').value = post.platforms ? JSON.stringify(post.platforms, null, 2) : '';
+                
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function deletePost(id) {
+            if (confirm('Delete this post?')) {
+                postsManager.deletePost(id);
+                showMessage('🗑️ Post deleted!');
+                loadPosts();
+                updateStats();
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('postForm').reset();
+            document.getElementById('editingId').value = '';
+            // Clear all textareas
+            document.getElementById('castData').value = '';
+            document.getElementById('crewData').value = '';
+            document.getElementById('dubbingStudiosData').value = '';
+            document.getElementById('trailersData').value = '';
+            document.getElementById('platformsData').value = '';
+        }
+
+        function exportPosts() {
+            const count = postsManager.exportToFile();
+            showMessage(`📤 Exported ${count} posts! Now upload posts-data.js to GitHub!`);
+        }
+
+        function exportBackup() {
+            const posts = postsManager.getAllPosts();
+            const backup = {
+                exportDate: new Date().toISOString(),
+                totalPosts: posts.length,
+                posts: posts
+            };
+            
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `posts-backup-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showMessage(`💾 Backup created with ${posts.length} posts!`);
+        }
+
+        function importBackup(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    const posts = backup.posts || backup; // Support both formats
+                    
+                    if (!Array.isArray(posts)) {
+                        showMessage('❌ Invalid backup file format!');
+                        return;
+                    }
+                    
+                    // Confirm before importing
+                    if (confirm(`Import ${posts.length} posts? This will replace all existing posts!`)) {
+                        localStorage.setItem('anime_posts', JSON.stringify(posts));
+                        loadPosts();
+                        updateStats();
+                        showMessage(`✅ Imported ${posts.length} posts successfully!`);
+                    }
+                } catch (error) {
+                    showMessage('❌ Error reading backup file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        function updateStats() {
+            const stats = postsManager.getStats();
+            document.getElementById('totalPosts').textContent = stats.total;
+            document.getElementById('lastUpdated').textContent = 
+                stats.lastUpdated === 'No posts yet' ? 'Never' : new Date(stats.lastUpdated).toLocaleString();
+        }
+
+        function showMessage(text) {
+            const msg = document.getElementById('successMessage');
+            msg.textContent = text;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+
+        // JSON Validation
+        function validateJSON(fieldId) {
+            const field = document.getElementById(fieldId);
+            const value = field.value.trim();
+            
+            if (!value) {
+                showMessage('✅ Empty field is valid!');
+                return;
+            }
+            
+            try {
+                const parsed = JSON.parse(value);
+                // Format it nicely
+                field.value = JSON.stringify(parsed, null, 2);
+                showMessage('✅ JSON is valid and formatted!');
+            } catch (e) {
+                showMessage('❌ Invalid JSON: ' + e.message);
+            }
+        }
+    </script>
+</body>
+</html>

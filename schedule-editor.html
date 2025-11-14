@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Editor - TADB</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .editor-container {
+            max-width: 1000px;
+            margin: 100px auto 50px;
+            padding: 20px;
+            background: var(--card-bg);
+            border-radius: 12px;
+        }
+        
+        .editor-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .editor-header h1 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        .schedule-list {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid var(--border-color);
+        }
+        
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .schedule-item img {
+            width: 60px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+        
+        .schedule-item-info {
+            flex: 1;
+        }
+        
+        .schedule-item-info h3 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .schedule-item-info p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+        
+        .success-message {
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="index.html" class="logo">TADB</a>
+            </div>
+            <div class="nav-center desktop-nav">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home nav-icon"></i>
+                    <span>Home</span>
+                </a>
+                <a href="schedule-editor.html" class="nav-link active">
+                    <i class="fas fa-calendar nav-icon"></i>
+                    <span>Schedule Editor</span>
+                </a>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="editor-container">
+        <div class="editor-header">
+            <h1><i class="fas fa-calendar-alt"></i> Anime Schedule Editor</h1>
+            <p>Manage anime release schedule. Changes appear on anime-schedule.html</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i> Schedule saved successfully!
+        </div>
+
+        <form id="scheduleForm">
+            <input type="hidden" id="scheduleId" name="id">
+            
+            <div class="form-group">
+                <label for="title">Anime Title *</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="day">Day *</label>
+                    <select id="day" name="day" required>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="time">Time *</label>
+                    <input type="text" id="time" name="time" placeholder="e.g., 7:00 PM" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="platform">Platform *</label>
+                    <input type="text" id="platform" name="platform" placeholder="e.g., Crunchyroll" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category *</label>
+                    <select id="category" name="category" required>
+                        <option value="upcoming">Upcoming</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="tv">TV Shows</option>
+                        <option value="movies">Movies</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="type">Type *</label>
+                    <select id="type" name="type" required>
+                        <option value="Episodes">Episodes (Series)</option>
+                        <option value="Movie">Movie (One-time)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status *</label>
+                    <select id="status" name="status" required>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Streaming">Streaming</option>
+                        <option value="Upcoming">Upcoming</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="episode">Current Episode</label>
+                <input type="text" id="episode" name="episode" placeholder="e.g., Episode 12">
+            </div>
+
+            <div class="form-group">
+                <label for="releaseDate">Release Date (Optional)</label>
+                <input type="date" id="releaseDate" name="releaseDate">
+                <small style="color: var(--text-muted);">
+                    📅 Auto-lifecycle: On release date → moves to "Now Streaming" → deletes after 2 days
+                </small>
+            </div>
+
+            <div class="form-group">
+                <label for="poster">Poster URL *</label>
+                <input type="url" id="poster" name="poster" required>
+            </div>
+
+            <div class="btn-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Schedule
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+            </div>
+        </form>
+
+        <div class="schedule-list">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2>Current Schedule</h2>
+                <button class="btn btn-secondary btn-small" onclick="migrateSchedules()" title="Add category field to old schedules">
+                    <i class="fas fa-sync"></i> Migrate Old Data
+                </button>
+            </div>
+            <div id="scheduleList"></div>
+        </div>
+    </div>
+
+    <script src="data-backup.js"></script>
+    <script src="schedule-manager.js"></script>
+    <script src="theme-manager.js"></script>
+    <script>
+        function loadScheduleList() {
+            const scheduleList = document.getElementById('scheduleList');
+            const schedules = window.scheduleManager.getAllSchedules();
+            
+            if (schedules.length === 0) {
+                scheduleList.innerHTML = '<p style="color: var(--text-muted);">No schedules yet.</p>';
+                return;
+            }
+            
+            scheduleList.innerHTML = schedules.map(schedule => {
+                const categoryBadge = schedule.category ? `<span style="background: var(--accent-primary); color: white; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; margin-left: 8px;">${schedule.category}</span>` : '';
+                return `
+                    <div class="schedule-item">
+                        <img src="${schedule.poster}" alt="${schedule.title}">
+                        <div class="schedule-item-info">
+                            <h3>${schedule.title} ${categoryBadge}</h3>
+                            <p>${schedule.day} at ${schedule.time} • ${schedule.platform} • ${schedule.status}</p>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-secondary btn-small" onclick="editSchedule(${schedule.id})">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteSchedule(${schedule.id})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function editSchedule(id) {
+            const schedule = window.scheduleManager.getScheduleById(id);
+            if (!schedule) return;
+            
+            document.getElementById('scheduleId').value = schedule.id;
+            document.getElementById('title').value = schedule.title;
+            document.getElementById('day').value = schedule.day;
+            document.getElementById('time').value = schedule.time;
+            document.getElementById('platform').value = schedule.platform;
+            document.getElementById('category').value = schedule.category || 'upcoming';
+            document.getElementById('type').value = schedule.type || 'Episodes';
+            document.getElementById('status').value = schedule.status;
+            document.getElementById('episode').value = schedule.episode || '';
+            document.getElementById('releaseDate').value = schedule.releaseDate ? schedule.releaseDate.split('T')[0] : '';
+            document.getElementById('poster').value = schedule.poster;
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function deleteSchedule(id) {
+            if (confirm('Delete this schedule?')) {
+                window.scheduleManager.deleteSchedule(id);
+                loadScheduleList();
+                showSuccessMessage('Schedule deleted!');
+            }
+        }
+
+        function resetForm() {
+            document.getElementById('scheduleForm').reset();
+            document.getElementById('scheduleId').value = '';
+        }
+
+        function showSuccessMessage(message) {
+            const successMsg = document.getElementById('successMessage');
+            successMsg.innerHTML = '<i class="fas fa-check-circle"></i> ' + message;
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+        }
+
+        function migrateSchedules() {
+            if (confirm('This will add category field to all old schedules. Continue?')) {
+                const updated = window.scheduleManager.migrateOldSchedules();
+                if (updated) {
+                    showSuccessMessage('✅ Schedules migrated! All anime now have categories.');
+                    loadScheduleList();
+                } else {
+                    showSuccessMessage('ℹ️ All schedules already have categories!');
+                }
+            }
+        }
+
+        document.getElementById('scheduleForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const releaseDate = formData.get('releaseDate');
+            
+            const scheduleData = {
+                id: formData.get('id') ? parseInt(formData.get('id')) : undefined,
+                title: formData.get('title'),
+                day: formData.get('day'),
+                time: formData.get('time'),
+                platform: formData.get('platform'),
+                category: formData.get('category'),
+                type: formData.get('type'),
+                status: formData.get('status'),
+                episode: formData.get('episode'),
+                poster: formData.get('poster'),
+                releaseDate: releaseDate ? new Date(releaseDate).toISOString() : null
+            };
+            
+            window.scheduleManager.saveSchedule(scheduleData);
+            showSuccessMessage(scheduleData.id ? 'Schedule updated!' : 'Schedule created!');
+            resetForm();
+            loadScheduleList();
+        });
+
+        loadScheduleList();
+    </script>
+
+    <!-- Password Protection -->
+    <div id="passwordModal" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.95); display: flex; align-items: center; justify-content: center; z-index: 10000; backdrop-filter: blur(10px);">
+        <div style="background: var(--card-bg); padding: 40px; border-radius: 20px; max-width: 400px; width: 90%; text-align: center; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); animation: modalFadeIn 0.3s ease;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 25px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; color: white;">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.8rem;">Schedule Editor Access</h2>
+            <p style="color: var(--text-muted); margin-bottom: 30px;">Enter password to access schedule editor</p>
+            <input type="password" id="passwordInput" placeholder="Enter password" style="width: 100%; padding: 15px; border: 2px solid var(--border-color); border-radius: 10px; background: var(--bg-primary); color: var(--text-primary); font-size: 1rem; margin-bottom: 10px; transition: all 0.3s ease;" onkeypress="if(event.key === 'Enter') checkPassword()"/>
+            <div id="errorMessage" style="color: #e74c3c; margin-bottom: 20px; font-size: 0.9rem; min-height: 20px; display: none;"><i class="fas fa-exclamation-circle"></i> Incorrect password!</div>
+            <button onclick="checkPassword()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'"><i class="fas fa-unlock"></i> Unlock Editor</button>
+            <a href="index.html" style="display: block; margin-top: 20px; color: var(--text-muted); text-decoration: none; font-size: 0.9rem;"><i class="fas fa-arrow-left"></i> Back to Homepage</a>
+        </div>
+    </div>
+
+    <style>
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes modalFadeOut { from { opacity: 1; transform: scale(1); } to { opacity: 0; transform: scale(0.9); } }
+        #passwordInput:focus { outline: none; border-color: #f093fb; box-shadow: 0 0 0 3px rgba(240, 147, 251, 0.1); }
+        .shake { animation: shake 0.5s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); } 20%, 40%, 60%, 80% { transform: translateX(10px); } }
+    </style>
+
+    <script src="auth-hash.js"></script>
+    <script>
+        async function checkPassword() {
+            const input = document.getElementById('passwordInput');
+            const errorMsg = document.getElementById('errorMessage');
+            const modal = document.getElementById('passwordModal');
+            const isValid = await window.AuthHash.verifyPassword(input.value);
+            if (isValid) {
+                window.AuthHash.setSession();
+                modal.style.animation = 'modalFadeOut 0.3s ease';
+                setTimeout(() => { modal.style.display = 'none'; document.body.style.overflow = 'auto'; }, 300);
+            } else {
+                errorMsg.style.display = 'block';
+                input.value = '';
+                input.style.borderColor = '#e74c3c';
+                const modalContent = modal.querySelector('div > div');
+                modalContent.classList.add('shake');
+                setTimeout(() => { modalContent.classList.remove('shake'); input.style.borderColor = 'var(--border-color)'; }, 500);
+                setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+            }
+        }
+        window.addEventListener('DOMContentLoaded', function() {
+            if (window.AuthHash.isSessionValid()) {
+                document.getElementById('passwordModal').style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                document.body.style.overflow = 'hidden';
+                document.getElementById('passwordInput').focus();
+            }
+        });
+        function logout() { window.AuthHash.logout(); }
+    </script>
+</body>
+</html>
