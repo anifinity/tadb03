@@ -32,7 +32,12 @@ class EasyPostsManager {
         const index = posts.findIndex(p => p.id === id);
         
         if (index !== -1) {
-            posts[index] = { ...posts[index], ...updatedPost };
+            // Keep original ID and timestamp, update everything else
+            posts[index] = { 
+                ...updatedPost, 
+                id: id,  // Keep original ID
+                timestamp: posts[index].timestamp  // Keep original timestamp
+            };
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(posts));
             return true;
         }
@@ -51,16 +56,11 @@ class EasyPostsManager {
     exportToFile() {
         const posts = this.getAllPosts();
         
-        // Create JavaScript file content
-        const fileContent = `// Auto-generated posts data
+        // Create JavaScript file content (compatible with index.html)
+        const fileContent = `// Posts Data - Auto-generated from Easy Post Editor
 // Last updated: ${new Date().toLocaleString()}
 
-const postsData = ${JSON.stringify(posts, null, 2)};
-
-// Export for use
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = postsData;
-}
+window.POSTS_DATA = ${JSON.stringify(posts, null, 2)};
 `;
 
         // Create download

@@ -551,12 +551,14 @@
             if (trailersData) post.trailers = trailersData;
             if (platformsData) post.platforms = platformsData;
 
-            if (editingId) {
-                // Update existing
+            if (editingId && editingId.trim() !== '') {
+                // Update existing post
+                console.log('Updating post with ID:', editingId);
                 postsManager.updatePost(editingId, post);
                 showMessage('✅ Post updated successfully!');
             } else {
-                // Add new
+                // Add new post
+                console.log('Adding new post');
                 postsManager.addPost(post);
                 showMessage('✅ Post added successfully!');
             }
@@ -622,7 +624,15 @@
             const post = posts.find(p => p.id === id);
             
             if (post) {
+                // Set editing ID
                 document.getElementById('editingId').value = post.id;
+                
+                // Update form title to show editing mode
+                const editorSection = document.querySelector('.editor-section h2');
+                editorSection.innerHTML = '✏️ Editing Post: ' + post.title;
+                editorSection.style.color = '#f39c12';
+                
+                // Fill form
                 document.getElementById('title').value = post.title || '';
                 document.getElementById('year').value = post.year || '';
                 document.getElementById('season').value = post.season || '';
@@ -649,6 +659,10 @@
                     document.getElementById('statRating').value = post.statistics.rating || '';
                     document.getElementById('likedPercentage').value = post.statistics.likedPercentage || '';
                     document.getElementById('totalViews').value = post.statistics.totalViews || '';
+                } else {
+                    document.getElementById('statRating').value = '';
+                    document.getElementById('likedPercentage').value = '';
+                    document.getElementById('totalViews').value = '';
                 }
                 
                 // Cast, crew, dubbing studios, trailers, platforms
@@ -659,6 +673,7 @@
                 document.getElementById('platformsData').value = post.platforms ? JSON.stringify(post.platforms, null, 2) : '';
                 
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                showMessage('✏️ Editing: ' + post.title);
             }
         }
 
@@ -674,6 +689,12 @@
         function clearForm() {
             document.getElementById('postForm').reset();
             document.getElementById('editingId').value = '';
+            
+            // Reset form title
+            const editorSection = document.querySelector('.editor-section h2');
+            editorSection.innerHTML = '✏️ Add/Edit Post';
+            editorSection.style.color = '#667eea';
+            
             // Clear all textareas
             document.getElementById('castData').value = '';
             document.getElementById('crewData').value = '';
